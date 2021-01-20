@@ -50,8 +50,8 @@ k = 0.5 * rho_air * pi * r ** 2 / m
 x0 = -6.95             # Initial x-position
 y0 = 0.3               # Initial y-position
 v0 = 22                # Initial velocity (m/s)
-vspiny0 = 9.9          # Initial tangential rotational velocity (m/s) (300rad/s)
-vspinz0 = 9.9          # Initial tangential rotational velocity (m/s) (300rad/s)
+vspiny0 = 9.9          # Initial tangential rotational velocity (m/s)
+vspinz0 = 9.9          # Initial tangential rotational velocity (m/s)
 alpha0 = radians(8.5)  # Launch angle (deg.)
 
 vx0, vy0 = v0 * cos(alpha0), v0 * sin(alpha0)
@@ -104,14 +104,3 @@ ax.legend()
 ax.set_xlabel("$x$ (m)")
 ax.set_ylabel("$z$ (m)")
 plt.savefig("02 XZ Path.png")
-
-# ax = plt.axes(projection='3d')
-# ax.plot3D(y, x, z, "r-")
-# ax.set_xlabel("$y$ (m)")
-# ax.set_ylabel("$x$ (m)")
-# ax.set_zlabel("$z$ (m)")
-# ax.set_xlim3d(-5, 5)
-# ax.set_ylim3d(-10, 10)
-# ax.set_zlim3d(0, 6)
-# plt.show()
-#plt.savefig("02 Path.png")
