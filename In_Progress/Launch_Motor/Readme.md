@@ -1,16 +1,7 @@
 ## Launch Motor info
 
 
-
-
-
-
-
-
-
-
 ### Rollers
-
 
 ![alt text](https://mathworld.wolfram.com/images/eps-gif/CircleCircleIntersection_1000.gif)
 
@@ -35,5 +26,12 @@ The arc length is then calculated as:
 l = r\times\Beta
 \end{align*}
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0Al+%3D+r%5Ctimes%5CBeta%0A%5Cend%7Balign%2A%7D%0A)
+
+
+
+
+
+
+
 
 
