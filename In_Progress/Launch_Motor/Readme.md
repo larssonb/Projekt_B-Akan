@@ -31,6 +31,12 @@ l = r\times\Beta
 
 
 
+## Create Latex in Readme 
+
+
+https://tex-image-link-generator.herokuapp.com/
+
+
 
 
 
