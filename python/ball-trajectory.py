@@ -57,7 +57,7 @@ class TennisBallTrajectory(object):
         self.v0 = v0          # Initial velocity [m/s]
         self.alpha0 = alpha0  # Launch angle [°]
         self.vspinyz0 = vspinyz0  # Tan spin velocity [m/s] (r * ωy, r * ωz)
-        self.p, self.gamma0 = (0., 0., 0.), 0.
+        self.p, self.gamma0 = (0., 0.), 0.
         self.solve()
 
     def solve(self):
@@ -94,8 +94,26 @@ class TennisBallTrajectory(object):
         self.p, self.gamma0 = p, gamma0
         r = Rotation.from_euler('z', gamma0, degrees=True)
         x_rot = np.array([np.dot(r.as_matrix(), point) for point in self.x])
-        x_trans = x_rot + p
+        x_trans = x_rot + (*p, 0.)
         self.x_trans = x_trans.tolist()
+
+    def target(self):
+        if self.in_court():
+            return tuple(self.x_trans[-1:][0][:2])
+
+    def print(self):
+        print('Input:')
+        print(f' p0: {self.p[0:2]}\n  γ: {self.gamma0}\n'
+              f'  α: {self.alpha0}\n v0: {self.v0}\n'
+              f'vt0: {self.vspinyz0}')
+
+        if self.in_court():
+            x, y = trajectory.target()
+            print(f'\nTarget:\n  t: ({x:.2f}, {y:.2f})')
+        elif self.clear_net():
+            print('\nBall is out')
+        else:
+            print('\nBall in net')
 
     def plot(self):
         x, y, z = list(zip(*self.x_trans))
@@ -127,6 +145,7 @@ class TennisBallTrajectory(object):
 
 # TennisBallTrajectory(v0, alpha0, z0=0.3, vspinyz0=(0.0, 0.0))
 trajectory = TennisBallTrajectory(15.0, 25, vspinyz0=(-9.9, 5.))
-# TennisBallTrajectory.transform((x, y, z), yaw)
-trajectory.transform((-8.95, -2.5, 0), 20)
+# TennisBallTrajectory.transform((x, y), yaw)
+trajectory.transform((-8.95, -2.5), 20)
+trajectory.print()
 trajectory.plot()
