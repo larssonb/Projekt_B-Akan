@@ -1,7 +1,5 @@
 ## Launch Motor info
 
-## Launch Motor info
-
 
 ### Rollers
 
