@@ -108,6 +108,8 @@ class TennisBallTrajectory(object):
     def target(self):
         if self.in_court():
             return tuple(self.x_trans[-1:][0][:2])
+        else:
+            return None
 
     def print(self):
         print('Input:')
@@ -151,24 +153,32 @@ class TennisBallTrajectory(object):
                     f' α={self.alpha0} v0={self.v0} vt0={self.vspinyz0}.pdf')
 
 
-# # TennisBallTrajectory(v0, alpha0, z0=0.3, vspinyz0=(0.0, 0.0))
-# trajectory = TennisBallTrajectory(15.0, 25, vspinyz0=(-9.9, 5.))
-# # TennisBallTrajectory.transform((x, y), yaw)
-# trajectory.transform((-8.95, -2.5), 20)
-# trajectory.print()
-# trajectory.plot()
-
 if __name__ == "__main__":
     N = 3
     x = np.linspace(-9.5, -5.5, N, endpoint=True)
     y = np.linspace(-4.5, 4.5, N, endpoint=True)
-    alpha =
-    gamma = 
+    alpha = np.linspace(10, 45, 8, endpoint=True)
+    gamma = np.linspace(-60, 60, 2*N+1, endpoint=True)
+    v0 = np.linspace(10, 37.5, N, endpoint=True)
+    vspiny0 = np.linspace(-10, 10, N, endpoint=True)
+    vspinz0 = np.linspace(-10, 10, N, endpoint=True)
     
-    x, t = np.meshgrid(x,y)
-    for x, y in zip(xx, yy):
-        print(x)
-        print(y)
+    gamma = np.linspace(0, 0, 1, endpoint=True)
+    v0 = np.linspace(15, 15, 1, endpoint=True)
+    vspiny0 = np.linspace(0, 0, 1, endpoint=True)
+    vspinz0 = np.linspace(0, 0, 1, endpoint=True)
+    
+    
+    
+    grid = np.meshgrid(x, y, alpha, gamma, v0, vspiny0, vspinz0)
+    for x, y, alpha, gamma, v0, vspiny0, vspinz0 in zip(*(g.flatten().tolist() for g in grid)):
+        #print(x, y, alpha, gamma, v0, vspiny0, vspinz0)
+        #break
+        t = TennisBallTrajectory(v0, alpha, vspinyz0=(vspiny0, vspinz0))
+        t.transform((x, y), gamma)
+        # print(t.target())
+        # if t.target():
+        #     t.plot()
 
 
 
