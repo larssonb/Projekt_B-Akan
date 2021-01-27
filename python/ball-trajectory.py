@@ -8,6 +8,7 @@ from scipy.optimize import newton
 from scipy.spatial.transform import Rotation
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import json
 
 
 def projectile_motion(g, k, x0, v0, vspinyz0, tt):
@@ -28,10 +29,10 @@ def projectile_motion(g, k, x0, v0, vspinyz0, tt):
             cD = 0.55
 
         return [vec[3], vec[4], vec[5],
-                - k * v * ((cD + cS) * vec[3] + cL * vec[4]),
+                - k * v * (cD * vec[3] + cL * abs(vec[5]) + cS * abs(vec[4])),
                 k * v * (copysign(1, vspinyz0[1]) * cS * vec[3] - cD * vec[4]),
-                - k * v * (copysign(1, vspinyz0[0]) * cL * vec[3]
-                - cD * vec[5]) - g]
+                - k * v * (copysign(1, vspinyz0[0]) * cL * vec[3] +
+                cD * vec[5]) - g]
 
     # solve the differential equation numerically
     vec = odeint(dif, [x0[0], x0[1], x0[2], v0[0], v0[1], v0[2]], tt)
@@ -72,12 +73,9 @@ class TennisBallTrajectory(object):
         x0 = (0., 0., self.z0)
         v0 = (self.v0 * cos(radians(self.alpha0)), 0.,
               self.v0 * sin(radians(self.alpha0)))
-        T_peak = newton(lambda t: projectile_motion(
-            self.g, self.k, x0, v0, self.vspinyz0, [0, t])[1][1][2], 0)
+        t_guess = 2 * v0[2] / self.g   # t without elevation change in a vacuum
         T = newton(lambda t: projectile_motion(
-            self.g, self.k, x0, v0, self.vspinyz0, [0, t])[0][1][2],
-            2 * T_peak)
-
+            self.g, self.k, x0, v0, self.vspinyz0, [0, t])[0][1][2], t_guess)
         self.t = np.linspace(0, T, 501)
         self.x, self.v = projectile_motion(
             self.g, self.k, x0, v0, self.vspinyz0, self.t)
@@ -107,7 +105,8 @@ class TennisBallTrajectory(object):
 
     def target(self):
         if self.in_court():
-            return tuple(self.x_trans[-1:][0][:2])
+            return {'x': self.x_trans[-1:][0][0],
+                    'y': self.x_trans[-1:][0][1]}
         else:
             return None
 
@@ -118,8 +117,8 @@ class TennisBallTrajectory(object):
               f'vt0: {self.vspinyz0}')
 
         if self.in_court():
-            x, y = trajectory.target()
-            print(f'\nTarget:\n  t: ({x:.2f}, {y:.2f})')
+            t = self.target()
+            print(f"\nTarget:\n  t: ({t['x']:.2f}, {t['y']:.2f})")
         elif self.clear_net():
             print('\nBall is out')
         else:
@@ -154,31 +153,30 @@ class TennisBallTrajectory(object):
 
 
 if __name__ == "__main__":
-    N = 3
-    x = np.linspace(-9.5, -5.5, N, endpoint=True)
-    y = np.linspace(-4.5, 4.5, N, endpoint=True)
-    alpha = np.linspace(10, 45, 8, endpoint=True)
-    gamma = np.linspace(-60, 60, 2*N+1, endpoint=True)
-    v0 = np.linspace(10, 37.5, N, endpoint=True)
-    vspiny0 = np.linspace(-10, 10, N, endpoint=True)
-    vspinz0 = np.linspace(-10, 10, N, endpoint=True)
-    
-    gamma = np.linspace(0, 0, 1, endpoint=True)
-    v0 = np.linspace(15, 15, 1, endpoint=True)
-    vspiny0 = np.linspace(0, 0, 1, endpoint=True)
-    vspinz0 = np.linspace(0, 0, 1, endpoint=True)
-    
-    
-    
+    x = np.linspace(-9.5, -5.5, 3, endpoint=True)
+    y = np.linspace(-4.5, 4.5, 3, endpoint=True)
+    alpha = np.linspace(10, 50, 5, endpoint=True)
+    gamma = np.linspace(-60, 60, 7, endpoint=True)
+    v0 = np.linspace(7.5, 37.5, 4, endpoint=True)
+    vspiny0 = np.linspace(-10, 10, 3, endpoint=True)
+    vspinz0 = np.linspace(-10, 10, 3, endpoint=True)
+
     grid = np.meshgrid(x, y, alpha, gamma, v0, vspiny0, vspinz0)
-    for x, y, alpha, gamma, v0, vspiny0, vspinz0 in zip(*(g.flatten().tolist() for g in grid)):
-        #print(x, y, alpha, gamma, v0, vspiny0, vspinz0)
-        #break
+
+    data = {'ball-trajectories': []}
+
+    for x, y, alpha, gamma, v0, vspiny0, vspinz0 in zip(
+            *(g.flatten().tolist() for g in grid)):
         t = TennisBallTrajectory(v0, alpha, vspinyz0=(vspiny0, vspinz0))
         t.transform((x, y), gamma)
-        # print(t.target())
-        # if t.target():
-        #     t.plot()
+        data['ball-trajectories'].append(
+            {'p': {'x': x,
+                   'y': y},
+             'v0': v0,
+             'vt0': {'y': vspiny0, 'z': vspinz0},
+             'alpha': alpha,
+             'gamma': gamma,
+             'target': t.target()})
 
-
-
+    with open('data.txt', 'w') as outfile:
+        json.dump(data, outfile, indent=4)
