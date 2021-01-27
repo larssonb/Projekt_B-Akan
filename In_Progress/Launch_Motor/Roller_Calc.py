@@ -23,7 +23,7 @@ def energy_roller(w, m_r, r_r):
     return W_r
 
 
-def roller_state(w_p, V_p, param, dual=True, quad=False):
+def roller_state(V_p, w_p, param, dual=False, quad=False):
     """
     w_p = [wp1, wp2] - angular velocity of ball wp1 (top spin), wp2 (side spin)
     V_p - linear velocity of ball
@@ -73,12 +73,17 @@ def roller_state(w_p, V_p, param, dual=True, quad=False):
         w += [V_p / (r_r * m.cos(theta)) + w_p[j] * r_p / r_r]
         w += [V_p / (r_r * m.cos(theta)) - w_p[j] * r_p / r_r]
 
+        if w_p[j] == 0:
+            w_ratio = 1
+        else:
+            w_ratio = w[i+1]/w[i]
+
         w0 += [m.sqrt(
-            (w[i] ** 2 + w[i + 1] ** 2) / (1 + (w[i + 1] / w[i]) ** 2) + (c * m_p * V_p ** 2 + I_p * w_p[j] ** 2) / (
-                        I_r * (1 + (w[i + 1] / w[i]) ** 2)))]
+            (w[i]**2 + w[i+1]**2) / (1 + (w_ratio)**2) + (c*m_p*V_p**2 + I_p*w_p[j]**2) / (
+                        I_r*(1 + (w_ratio)**2)))]
         w0 += [m.sqrt(
-            (w[i] ** 2 + w[i + 1] ** 2) / (1 + (w[i] / w[i + 1]) ** 2) + (c * m_p * V_p ** 2 + I_p * w_p[j] ** 2) / (
-                        I_r * (1 + (w[i] / w[i + 1]) ** 2)))]
+            (w[i]**2 + w[i+1]**2) / (1 + (1/w_ratio)**2) + (c*m_p*V_p**2 + I_p*w_p[j]**2) / (
+                        I_r*(1 + (1/w_ratio)**2)))]
 
         for k in range(i, i + 2):
             W_0r += [energy_roller(w0[k], m_r, r_r)]
@@ -93,7 +98,7 @@ def roller_state(w_p, V_p, param, dual=True, quad=False):
 
     return np.array(w), np.array(w0), np.array(W_dr), np.array(W_0r)
 
-def roller_sequence(V, w1, w2, d_t=False, P=False):
+def roller_sequence(V, w1, w2, param):
     """
     Input:
 
@@ -113,34 +118,35 @@ def roller_sequence(V, w1, w2, d_t=False, P=False):
     return w_r1, w_r2
 
 
+def test_roller_calc():
 
-spin = 0  # [rpm]
-speed = 180  # [km/h]
+    spin = 500  # [rpm]
+    speed = 0  # [km/h]
 
-w = spin*(2*m.pi)/60  # rad/s
-V = speed/3.6  # m/s
+    w = spin*(2*m.pi)/60  # rad/s
+    V = speed/3.6  # m/s
 
-m_r = 0.25*0.1  # [kg]
-m_p = 0.056  # [kg]
+    m_r = 0.25*0.1  # [kg]
+    m_p = 0.056  # [kg]
 
-r_r = 0.1*1.0  # [m]
-r_p = 0.0677/2  # [m]
-d = 0.25  # [m]
+    r_r = 0.1*1.0  # [m]
+    r_p = 0.0677/2  # [m]
+    d = 0.25  # [m]
 
-param = [m_r, m_p, r_r, r_p, d]
-w_p = [w, w/2]
-V_p = V
+    param = [m_r, m_p, r_r, r_p, d]
+    w_p = [w, w/2]
+    V_p = V
 
-w, w0, W_dr, W_0r = roller_state(w_p, V_p, param, dual=False, quad=True)
+    w, w0, W_dr, W_0r = roller_state(V_p, w_p, param, dual=False, quad=True)
 
-# Convert to RPM
+    # Convert to RPM
 
-w_rmp = w/(2*m.pi)*60
-w0_rpm = w0/(2*m.pi)*60
+    w_rmp = w/(2*m.pi)*60
+    w0_rpm = w0/(2*m.pi)*60
 
 
-Results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rmp, 'Wdr': W_dr, 'W0r': W_0r})
+    Results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rmp, 'Wdr': W_dr, 'W0r': W_0r})
 
-pd.options.display.float_format = "{:.0f}".format
+    pd.options.display.float_format = "{:.0f}".format
 
-print(Results)
+    print(Results)
