@@ -143,9 +143,24 @@ class TennisBallTrajectory(object):
                     f' α={self.alpha0} v0={self.v0} vt0={self.vspinyz0}.pdf')
 
 
-# TennisBallTrajectory(v0, alpha0, z0=0.3, vspinyz0=(0.0, 0.0))
-trajectory = TennisBallTrajectory(15.0, 25, vspinyz0=(-9.9, 5.))
-# TennisBallTrajectory.transform((x, y), yaw)
-trajectory.transform((-8.95, -2.5), 20)
-trajectory.print()
-trajectory.plot()
+# # TennisBallTrajectory(v0, alpha0, z0=0.3, vspinyz0=(0.0, 0.0))
+# trajectory = TennisBallTrajectory(15.0, 25, vspinyz0=(-9.9, 5.))
+# # TennisBallTrajectory.transform((x, y), yaw)
+# trajectory.transform((-8.95, -2.5), 20)
+# trajectory.print()
+# trajectory.plot()
+
+if __name__ == "__main__":
+    N = 3
+    x = np.linspace(-9.5, -5.5, N, endpoint=True)
+    y = np.linspace(-4.5, 4.5, N, endpoint=True)
+    alpha =
+    gamma = 
+    
+    x, t = np.meshgrid(x,y)
+    for x, y in zip(xx, yy):
+        print(x)
+        print(y)
+
+
+
