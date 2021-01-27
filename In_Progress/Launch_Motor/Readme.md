@@ -27,6 +27,8 @@ l = r\times\Beta
 \end{align*}
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0Al+%3D+r%5Ctimes%5CBeta%0A%5Cend%7Balign%2A%7D%0A)
 
+##Motor Selection
+
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
 
 ![\Delta t \geq  I_r k_t \ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)
