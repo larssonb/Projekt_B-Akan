@@ -41,6 +41,14 @@ def projectile_motion(g, k, x0, v0, vspinyz0, tt):
             list(zip(vec[:, 3], vec[:, 4], vec[:, 5])))
 
 
+def flyweight(cls):
+    instances = dict()
+    return lambda *args, **kargs: instances.setdefault(
+                                            (args, tuple(kargs.items())),
+                                            cls(*args, **kargs))
+
+
+@flyweight
 class TennisBallTrajectory(object):
     # Parameters of projectile (modelled after a tennis ball)
     g = 9.81              # Acceleration due to gravity (m/s^2)
