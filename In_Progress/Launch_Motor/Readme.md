@@ -55,6 +55,10 @@ Solution to first order linear diff. equation:
 
 Consider known angular speeds at t = 0 (w1) and t = delta_t (w2)
 
+![\omega(0) = \omega_1](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega%280%29+%3D+%5Comega_1)
+
+![\omega(\Delta t) = \omega_2](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega%28%5CDelta+t%29+%3D+%5Comega_2%0A)
+
 ![A = (\omega_1 - \omega_0)](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+A+%3D+%28%5Comega_1+-+%5Comega_0%29)
 
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
@@ -67,11 +71,13 @@ If delta t is given a threshold value the motor parameters must fulfill the crit
 
 ![\tau_0 \geq -\frac{\omega_0 I_r}{\Delta t}\ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctau_0+%5Cgeq+-%5Cfrac%7B%5Comega_0+I_r%7D%7B%5CDelta+t%7D%5Cln+%5Cleft%28+%5Cfrac%7B%5Comega_2+-+%5Comega_0%7D%7B%5Comega_1+-+%5Comega_0%7D+%5Cright%29)
 
-## Roller and Ball Definition in Calculations
+## Roller Calculations
 
 
 <img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Rollers.jpg" alt="alt text" width=300>
 <img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Ball.jpg" alt="alt text" width=300>
+
+
 
 ## Create Latex in Readme 
 
