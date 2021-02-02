@@ -69,7 +69,9 @@ If delta t is given a threshold value the motor parameters must fulfill the crit
 
 ## Roller and Ball Definition in Calculations
 
-![Alt text](Rollers.jpg?raw=true)
+
+<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Rollers.jpg" alt="alt text" width=300>
+<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Ball.jpg" alt="alt text" width=300>
 
 ## Create Latex in Readme 
 
