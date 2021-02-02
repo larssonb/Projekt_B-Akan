@@ -45,6 +45,14 @@ Newton's second law for the roller:
 ![\tau = I_r\frac{d\omega}{dt}
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctau+%3D+I_r%5Cfrac%7Bd%5Comega%7D%7Bdt%7D%0A)
 
+Using the relation between angular speed and torque for the DC motor(assuming it always opperates accordign to the relation) we obtain a differential equation for the angular speed:
+
+![\omega' - \frac{1}{I_rk_t}\omega + \frac{\omega_0}{I_rk_t} = 0](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega%27+-+%5Cfrac%7B1%7D%7BI_rk_t%7D%5Comega+%2B+%5Cfrac%7B%5Comega_0%7D%7BI_rk_t%7D+%3D+0)
+
+Solution to first order linear diff. equation:
+
+![\omega(t) = Ae^{\frac{t}{I_rk_t}} + \omega_0](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega%28t%29+%3D+Ae%5E%7B%5Cfrac%7Bt%7D%7BI_rk_t%7D%7D+%2B+%5Comega_0)
+
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
 
 ![\Delta t \geq  I_r k_t \ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)
