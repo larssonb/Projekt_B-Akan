@@ -74,10 +74,23 @@ If delta t is given a threshold value the motor parameters must fulfill the crit
 ## Roller Calculations
 
 
-<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Rollers.png" alt="alt text" width=300>
-<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Ball.png" alt="alt text" width=300>
+<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Roller_Ball_def.png" alt="alt text" width=600>
 
+<img src="https://github.com/larssonb/Projekt_B-Akan/blob/main/In_Progress/Launch_Motor/Roller_Kinematics.png" alt="alt text" width=150>
 
+Assuming the contact points between roller and ball travel at the same velocity at the moment ball and roller lose contact, the angular velocity of the rollers can be written as :
+
+![\omega_{p1}r_r \cos(\theta) + V_p = \omega_1r_r\cos(\theta)
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_%7Bp1%7Dr_r+%5Ccos%28%5Ctheta%29+%2B+V_p+%3D+%5Comega_1r_r%5Ccos%28%5Ctheta%29%0A)
+ 
+![-\omega_{p1}r_r \cos(\theta) + V_p = \omega_2r_r\cos(\theta)
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+-%5Comega_%7Bp1%7Dr_r+%5Ccos%28%5Ctheta%29+%2B+V_p+%3D+%5Comega_2r_r%5Ccos%28%5Ctheta%29%0A)
+
+![\omega_1 = \omega_{p1}\frac{r_p}{r_r}+\frac{V_p}{r_r}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_1+%3D+%5Comega_%7Bp1%7D%5Cfrac%7Br_p%7D%7Br_r%7D%2B%5Cfrac%7BV_p%7D%7Br_r%7D%0A)
+
+![\omega_2 = - \omega_{p1}\frac{r_p}{r_r}+\frac{V_p}{r_r}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_2+%3D+-+%5Comega_%7Bp1%7D%5Cfrac%7Br_p%7D%7Br_r%7D%2B%5Cfrac%7BV_p%7D%7Br_r%7D%0A)
 
 ## Create Latex in Readme 
 
