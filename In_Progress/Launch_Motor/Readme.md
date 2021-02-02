@@ -92,6 +92,24 @@ Assuming the contact points between roller and ball travel at the same velocity 
 ![\omega_2 = - \omega_{p1}\frac{r_p}{r_r}+\frac{V_p}{r_r}
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_2+%3D+-+%5Comega_%7Bp1%7D%5Cfrac%7Br_p%7D%7Br_r%7D%2B%5Cfrac%7BV_p%7D%7Br_r%7D%0A)
 
+Assumptions: 
+*The ratio of angluar velocity between roller 1 and 2 (3 and 4) stays the same right before anad after the throw.
+*The horizontal and vertical roller pairs transfer energy to the balls linear kinetic energy equally
+*Energy of the rollers and ball is conserved during the throw (no sink or production of energy)
+
+We have:
+
+![\frac{\omega_{10}}{\omega_20} =  \frac{\omega_{1}}{\omega_2} 
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cfrac%7B%5Comega_%7B10%7D%7D%7B%5Comega_20%7D+%3D++%5Cfrac%7B%5Comega_%7B1%7D%7D%7B%5Comega_2%7D+%0A)
+
+![\frac{1}{2}I_r\left(\omega_10^2 + \omega_20^2\right) = \frac{1}{2}I_r\left(\omega_1^2 + \omega_2^2\right) + \frac{1}{4}m_pV_p^2 + \frac{1}{2}I_p\omega_{1p}^2](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cfrac%7B1%7D%7B2%7DI_r%5Cleft%28%5Comega_10%5E2+%2B+%5Comega_20%5E2%5Cright%29+%3D+%5Cfrac%7B1%7D%7B2%7DI_r%5Cleft%28%5Comega_1%5E2+%2B+%5Comega_2%5E2%5Cright%29+%2B+%5Cfrac%7B1%7D%7B4%7Dm_pV_p%5E2+%2B+%5Cfrac%7B1%7D%7B2%7DI_p%5Comega_%7B1p%7D%5E2)
+
+Combining equations:
+
+![\omega_{10} = \sqrt{\frac{\omega_1^2 + \omega_2^2}{1+\left(\frac{\omega_2}{\omega_1}\right)^2} + \frac{1/2*m_pV_p^2 + I_p\omega_{p1}^2}{I_r\left(1+\left(\frac{\omega_2}{\omega_1}\right)^2\right)}}](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_%7B10%7D+%3D+%5Csqrt%7B%5Cfrac%7B%5Comega_1%5E2+%2B+%5Comega_2%5E2%7D%7B1%2B%5Cleft%28%5Cfrac%7B%5Comega_2%7D%7B%5Comega_1%7D%5Cright%29%5E2%7D+%2B+%5Cfrac%7B1%2F2%2Am_pV_p%5E2+%2B+I_p%5Comega_%7Bp1%7D%5E2%7D%7BI_r%5Cleft%281%2B%5Cleft%28%5Cfrac%7B%5Comega_2%7D%7B%5Comega_1%7D%5Cright%29%5E2%5Cright%29%7D%7D)
+
+![\omega_{20} = \sqrt{\frac{\omega_1^2 + \omega_2^2}{1+\left(\frac{\omega_1}{\omega_2}\right)^2} + \frac{1/2*m_pV_p^2 + I_p\omega_{p1}^2}{I_r\left(1+\left(\frac{\omega_1}{\omega_2}\right)^2\right)}}](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega_%7B20%7D+%3D+%5Csqrt%7B%5Cfrac%7B%5Comega_1%5E2+%2B+%5Comega_2%5E2%7D%7B1%2B%5Cleft%28%5Cfrac%7B%5Comega_1%7D%7B%5Comega_2%7D%5Cright%29%5E2%7D+%2B+%5Cfrac%7B1%2F2%2Am_pV_p%5E2+%2B+I_p%5Comega_%7Bp1%7D%5E2%7D%7BI_r%5Cleft%281%2B%5Cleft%28%5Cfrac%7B%5Comega_1%7D%7B%5Comega_2%7D%5Cright%29%5E2%5Cright%29%7D%7D)
+
 ## Create Latex in Readme 
 
 
