@@ -53,6 +53,10 @@ Solution to first order linear diff. equation:
 
 ![\omega(t) = Ae^{\frac{t}{I_rk_t}} + \omega_0](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Comega%28t%29+%3D+Ae%5E%7B%5Cfrac%7Bt%7D%7BI_rk_t%7D%7D+%2B+%5Comega_0)
 
+Consider known angular speeds at t = 0 (w1) and t = delta_t (w2)
+
+![A = (\omega_1 - \omega_0)](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+A+%3D+%28%5Comega_1+-+%5Comega_0%29)
+
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
 
 ![\Delta t \geq  I_r k_t \ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)
