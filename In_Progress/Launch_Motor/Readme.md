@@ -29,6 +29,21 @@ l = r\times\Beta
 
 ## Motor Selection
 
+The DC motor operates along a stright line relating torque to angular speed. The relationship os expressed as:
+
+![n(\tau) = k_t\tau + n_0
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+n%28%5Ctau%29+%3D+k_t%5Ctau+%2B+n_0%0A)
+
+![\tau = \frac{n - n_0}{k_t}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctau+%3D+%5Cfrac%7Bn+-+n_0%7D%7Bk_t%7D%0A)
+
+![\textrm{Where}\: n_0 = \textrm{No-load}\: \textrm{speed}, \tau_0 = \textrm{Stall-torque},\: \textrm{and}\: k_t = -\frac{n_0}{\tau_0}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctextrm%7BWhere%7D%5C%3A+n_0+%3D+%5Ctextrm%7BNo-load%7D%5C%3A+%5Ctextrm%7Bspeed%7D%2C+%5Ctau_0+%3D+%5Ctextrm%7BStall-torque%7D%2C%5C%3A+%5Ctextrm%7Band%7D%5C%3A+k_t+%3D+-%5Cfrac%7Bn_0%7D%7B%5Ctau_0%7D%0A)
+
+Newton's second law for the roller:
+
+
+
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
 
 ![\Delta t \geq  I_r k_t \ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)
