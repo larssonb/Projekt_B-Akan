@@ -42,7 +42,8 @@ The DC motor operates along a stright line relating torque to angular speed. The
 
 Newton's second law for the roller:
 
-
+![\tau = I_r\frac{d\omega}{dt}
+](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctau+%3D+I_r%5Cfrac%7Bd%5Comega%7D%7Bdt%7D%0A)
 
 Given motor stall torque, no-load speed and two roller angular speeds to go between delta t is expressed as follows:
 
