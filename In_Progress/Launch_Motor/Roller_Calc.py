@@ -37,6 +37,8 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
 
     dual - Two rollers (wp2 must = 0)
     quad - Four rollers
+
+    Comment: See markdown file for launch motors on github for explanation of calculations
     """
 
     m_r = param[0]
@@ -69,7 +71,7 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
             j = 0
         else:
             j = 1
-
+        # Calculate angular velocity of rollers when ball leaves rollers
         w += [V_p / (r_r * m.cos(theta)) + w_p[j] * r_p / r_r]
         w += [V_p / (r_r * m.cos(theta)) - w_p[j] * r_p / r_r]
 
@@ -77,10 +79,10 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
             w_ratio = 1
         else:
             w_ratio = w[i+1]/w[i]
-
+        # Calculate angular velocity of rollers right before ball enters rollers
         w0 += [m.sqrt(
-            (w[i]**2 + w[i+1]**2) / (1 + (w_ratio)**2) + (c*m_p*V_p**2 + I_p*w_p[j]**2) / (
-                        I_r*(1 + (w_ratio)**2)))]
+            (w[i]**2 + w[i+1]**2) / (1 + w_ratio**2) + (c*m_p*V_p**2 + I_p*w_p[j]**2) / (
+                        I_r*(1 + w_ratio**2)))]
         w0 += [m.sqrt(
             (w[i]**2 + w[i+1]**2) / (1 + (1/w_ratio)**2) + (c*m_p*V_p**2 + I_p*w_p[j]**2) / (
                         I_r*(1 + (1/w_ratio)**2)))]
@@ -97,6 +99,7 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
     print(balance)
 
     return np.array(w), np.array(w0), np.array(W_dr), np.array(W_0r)
+
 
 def roller_sequence(V, w1, w2, param):
     """
@@ -144,8 +147,7 @@ def test_roller_calc():
     w_rmp = w/(2*m.pi)*60
     w0_rpm = w0/(2*m.pi)*60
 
-
-    Results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rmp, 'Wdr': W_dr, 'W0r': W_0r})
+    results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rmp, 'Wdr': W_dr, 'W0r': W_0r})
 
     pd.options.display.float_format = "{:.0f}".format
 
