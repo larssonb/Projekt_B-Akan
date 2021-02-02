@@ -67,7 +67,9 @@ If delta t is given a threshold value the motor parameters must fulfill the crit
 
 ![\tau_0 \geq -\frac{\omega_0 I_r}{\Delta t}\ln \left( \frac{\omega_2 - \omega_0}{\omega_1 - \omega_0} \right)](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Ctau_0+%5Cgeq+-%5Cfrac%7B%5Comega_0+I_r%7D%7B%5CDelta+t%7D%5Cln+%5Cleft%28+%5Cfrac%7B%5Comega_2+-+%5Comega_0%7D%7B%5Comega_1+-+%5Comega_0%7D+%5Cright%29)
 
+## Roller and Ball Definition in Calculations
 
+![Alt text](Rollers.jpg?raw=true "Title")
 
 ## Create Latex in Readme 
 
