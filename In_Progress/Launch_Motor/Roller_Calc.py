@@ -23,7 +23,7 @@ def energy_roller(w, m_r, r_r):
     return W_r
 
 
-def roller_state(V_p, w_p, param, dual=False, quad=False):
+def roller_state(V_p, w_p, param, n=4):
     """
     w_p = [wp1, wp2] - angular velocity of ball wp1 (top spin), wp2 (side spin)
     V_p - linear velocity of ball
@@ -35,12 +35,12 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
     r_p - radius of ball
     d - distance between roller axes
 
-    dual - Two rollers (wp2 must = 0)
-    quad - Four rollers
+    n - number of rollers (2 or 4)
 
     Comment: See markdown file for launch motors on github for explanation of calculations
     """
 
+    global p
     m_r = param[0]
     m_p = param[1]
     r_r = param[2]
@@ -56,16 +56,15 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
     W_0r = []
 
     theta = m.asin((r_r + r_p) / d)
-    if dual:
+    if n == 2:
+        p = 1  # n = 4 quad
+        c = 2/n  # c = 1/2
 
-        n = 1  # n = 4 quad
-        c = 1  # c = 1/2
-    elif quad:
+    elif n == 4:
+        p = 4
+        c = 2/n
 
-        n = 4
-        c = 1 / 2
-
-    for i in range(0, n, 2):
+    for i in range(0, p, 2):
 
         if i <= 1:
             j = 0
@@ -96,9 +95,9 @@ def roller_state(V_p, w_p, param, dual=False, quad=False):
     W_dr_array = np.array(W_dr)
 
     balance = W_dr_array.sum() + W_kp
-    print(balance)
+    #print(balance)
 
-    return np.array(w), np.array(w0), np.array(W_dr), np.array(W_0r)
+    return [w, w0, W_dr, W_0r]
 
 
 def roller_sequence(V, w1, w2, param):
@@ -115,8 +114,8 @@ def roller_sequence(V, w1, w2, param):
     w_r2 = roller angular speed before throw 2 [rad/s]
     """
 
-    w_r1, w_pre_1, W_dr_1, W_0r_1 = roller_state(V[0], w1, param, quad=True)
-    w_post_2, w_r2, W_dr_2, W_0r_2 = roller_state(V[1], w2, param, quad=True)
+    w_r1, w_pre_1, W_dr_1, W_0r_1 = roller_state(V[0], w1, param, n=4)
+    w_post_2, w_r2, W_dr_2, W_0r_2 = roller_state(V[1], w2, param, n=4)
 
     return w_r1, w_r2
 
@@ -140,7 +139,7 @@ def test_roller_calc():
     w_p = [w, w/2]
     V_p = V
 
-    w, w0, W_dr, W_0r = roller_state(V_p, w_p, param, dual=False, quad=True)
+    w, w0, W_dr, W_0r = roller_state(V_p, w_p, param, n=4)
 
     # Convert to RPM
 
@@ -151,4 +150,46 @@ def test_roller_calc():
 
     pd.options.display.float_format = "{:.0f}".format
 
-    print(Results)
+    print(results)
+
+def motor_envelope(path='/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'):
+
+    #path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
+
+    # Read excel into dataframe
+    df_lc=pd.read_excel(path)
+
+    m_r = 0.25*0.1  # [kg]
+    m_p = 0.056  # [kg]
+
+    r_r = 0.1*1.0  # [m]
+    r_p = 0.0677/2  # [m]
+    d = 0.25  # [m]
+
+    param = [m_r, m_p, r_r, r_p, d]
+
+    ms = []
+
+    for index, row in df_lc.iterrows():
+        df = roller_state(row['v0'],
+                          [row['vspinz'], row['vspiny']],
+                          param,
+                          n=4)
+        ms.append(df)
+
+    motor_states = pd.DataFrame(ms, index=df_lc['LC'],  columns=['w', 'w0', 'W_dr', 'W_0r'])
+
+    return motor_states
+
+
+
+
+
+
+
+
+
+
+
+
+
