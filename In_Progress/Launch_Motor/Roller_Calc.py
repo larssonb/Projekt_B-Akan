@@ -25,15 +25,15 @@ def energy_roller(w, m_r, r_r):
 
 def roller_state(V_p, w_p, param, n=4):
     """
-    w_p = [wp1, wp2] - angular velocity of ball wp1 (top spin), wp2 (side spin)
-    V_p - linear velocity of ball
+    w_p = [wp1, wp2] - angular velocity of ball wp1 (top spin), wp2 (side spin)   [rad/s]
+    V_p - linear velocity of ball  [m/s]
 
     param = [m_r,m_p,r_r,r_p,d]
-    m_r - mass of roller
-    m_p - mass of ball
-    r_r - radius of roller
-    r_p - radius of ball
-    d - distance between roller axes
+    m_r - mass of roller     [kg]
+    m_p - mass of ball       [kg]
+    r_r - radius of roller   [m]
+    r_p - radius of ball     [m]
+    d - distance between roller axes [m]
 
     n - number of rollers (2 or 4)
 
@@ -100,13 +100,13 @@ def roller_state(V_p, w_p, param, n=4):
     return [w, w0, W_dr, W_0r]
 
 
-def roller_sequence(V, w1, w2, param):
+def roller_sequence(V, w_p1, w_p2, param):
     """
     Input:
 
     V = [V1, V2] - linear velocity of throw 1 and 2 [m/s]
-    w1 = [w11, w12] - spin of throw 1 around axis 1 and 2 [rad/s]
-    w2 = [w21, w22] - spin of throw 2 around axis 1 and 2 [rad/s]
+    w_p1 = [w11, w12] - spin of throw 1 around y-axis (1) and z-axis(2) [rad/s]
+    w_p2 = [w21, w22] - spin of throw 2 around y-axis (1) and z-axis(2) [rad/s]
 
     Output:
 
@@ -114,8 +114,8 @@ def roller_sequence(V, w1, w2, param):
     w_r2 = roller angular speed before throw 2 [rad/s]
     """
 
-    w_r1, w_pre_1, W_dr_1, W_0r_1 = roller_state(V[0], w1, param, n=4)
-    w_post_2, w_r2, W_dr_2, W_0r_2 = roller_state(V[1], w2, param, n=4)
+    w_r1, w_pre_1, W_dr_1, W_0r_1 = roller_state(V[0], w_p1, param, n=4)
+    w_post_2, w_r2, W_dr_2, W_0r_2 = roller_state(V[1], w_p2, param, n=4)
 
     return w_r1, w_r2
 
@@ -152,9 +152,10 @@ def test_roller_calc():
 
     print(results)
 
-def motor_envelope(path='/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'):
 
-    #path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
+def roller_envelope(path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_flat.xlsx"):
+
+    # path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
 
     # Read excel into dataframe
     df_lc=pd.read_excel(path)
@@ -168,18 +169,39 @@ def motor_envelope(path='/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xls
 
     param = [m_r, m_p, r_r, r_p, d]
 
-    ms = []
+    df_lc_cmb = pd.DataFrame(columns=['lc1', 'lc2', 'w_r1', 'w_r2', 'd_w_max', 'r_id'])
 
-    for index, row in df_lc.iterrows():
-        df = roller_state(row['v0'],
-                          [row['vspinz'], row['vspiny']],
-                          param,
-                          n=4)
-        ms.append(df)
+    for index1, row1 in df_lc.iterrows():
+        for index2, row2 in df_lc.loc[index1:].iterrows():
+            V = [row1['v0'], row2['v0']]
 
-    motor_states = pd.DataFrame(ms, index=df_lc['LC'],  columns=['w', 'w0', 'W_dr', 'W_0r'])
+            w_p1 = [row1['vspinz']/r_p, -row1['vspiny']/r_p]
+            w_p2 = [row2['vspinz']/r_p, -row2['vspiny']/r_p]
 
-    return motor_states
+            w_r1, w_r2 = roller_sequence(V, w_p1, w_p2, param)
+
+            w_r1 = np.array(w_r1)
+            w_r2 = np.array(w_r2)
+
+            i_max = np.argmax(w_r2 - w_r1)
+
+            d_w_max = (w_r2 - w_r1)[i_max]
+
+            df_lc_cmb = df_lc_cmb.append({'lc1': row1['LC'], 'lc2': row2['LC'],
+                                                  'w_r1': w_r1, 'w_r2': w_r2,
+                                                  'd_w_max': d_w_max, 'r_id': i_max}, ignore_index=True)
+
+
+            
+    #     df = roller_state(row['v0'],
+    #                       [row['vspinz'], row['vspiny']],
+    #                       param,
+    #                       n=4)
+    #     ms.append(df)
+    #
+    # motor_states = pd.DataFrame(ms, index=df_lc['LC'],  columns=['w', 'w0', 'W_dr', 'W_0r'])
+
+    return df_lc, df_lc_cmb
 
 
 
