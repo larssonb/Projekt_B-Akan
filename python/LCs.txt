@@ -1,0 +1,53 @@
+LC,	p0x, 	p0y,	γ,		α,		v0,		vspinz,	vspiny,	Description
+	
+1a,	-7.0,	-0.3,	2,		12.0,	21.2,	3,		0,		Serve - no side spin - "mycket lite topspin"
+1b,	-7.0,	-0.3,	2,		12.0,	17.7,	-10,	0,		Serve - no side spin - Backspin
+1c,	-7.0,	0.4,	-7,		12.0,	21.8,	3,		8,		Serve - some side spin + "mycket lite topspin"
+1d,	-7.0,	0.5,	-8,		12.0,	17.8,	-10,	8,		Serve - some side spin + Backspin
+1e,	-7.0,	-1.0,	21,		12.0,	21.5,	3,		0,		Serve - no side spin - "mycket lite topspin" diagonal
+1f,	-7.0,	-1.0,	21,		12.0,	18.0,	-10,	0,		Serve - no side spin - Backspin diagonal
+1g,	-7.0,	-1.0,	18,		12.0,	21.7,	3,		8,		Serve - some side spin - "mycket lite topspin" diagonal
+1h,	-7.0,	-1.0,	18,		12.0,	18.0,	-10,	8,		Serve - some side spin - Backspin diagonal
+2a,	-7.5,	0.0,	0,		16.6,	17.0,	10,		0,		Vanligt Slag - kort - låg - topspin
+2b,	-7.5,	0.0,	0,		12.0,	24.8,	10,		0,		Vanligt Slag - lång - låg - topspin
+2c,	-7.5,	0.0,	0,		30.0,	13.4,	10,		0,		Vanligt Slag - kort - hög - topspin
+2d,	-7.5,	0.0,	0,		23.0,	18.1,	10,		0,		Vanligt Slag - lång - hög - topspin
+2e,	-7.5,	0.0,	0,		17.5,	13.7,	-10,	0,		Vanligt Slag - kort - låg - backspin
+2f,	-7.5,	0.0,	0,		12.0,	18.1,	-10,	0,		Vanligt Slag - lång - låg - backspin
+2g,	-7.5,	0.0,	0,		15.1,	12.0,	-10,	0,		Vanligt Slag - kort - hög - backspin
+2h,	-7.5,	0.0,	0,		22.0,	15.1,	-10,	0,		Vanligt Slag - lång - låg - backspin
+2i,	-7.5,	0.0,	18,		18.0,	17.0,	10,		0,		Vanligt Slag - kort - låg - topspin - diagonal
+2j,	-7.5,	0.0,	14,		12.0,	25.4,	10,		0,		Vanligt Slag - lång - låg - topspin - diagonal
+2k,	-7.5,	0.0,	18,		28.0,	14.3,	10,		0,		Vanligt Slag - kort - hög - topspin - diagonal
+2l,	-7.5,	0.0,	14,		22.0,	18.9,	10,		0,		Vanligt Slag - lång - hög - topspin - diagonal
+2m,	-7.5,	0.0,	18,		16.5,	14.4,	-10,	0,		Vanligt Slag - kort - låg - backspin - diagonal
+2n,	-7.5,	0.0,	14,		11.0,	18.9,	-10,	0,		Vanligt Slag - lång - låg - backspin - diagonal
+2o,	-7.5,	0.0,	18,		27.0,	12.6,	-10,	0,		Vanligt Slag - kort - hög - backspin - diagonal
+2p,	-7.5,	0.0,	14,		21.0,	15.6,	-10,	0,		Vanligt Slag - lång - hög - backspin - diagonal
+3a,	-7.5,	0.0,	0,		50.0,	15.0,	0,		0,		Svår lobb - rak
+3b,	-7.5,	0.0,	14,		50.0,	15.1,	0,		0,		Svår lobb - diagonal
+3c,	-7.5,	0.0,	0,		57.0,	16.4,	0,		0,		Svår lobb - rak [8 m]
+3d,	-7.5,	0.0,	15,		56.0,	16.6,	0,		0,		Svår lobb - diagonal [8 m]
+4a,	-7.5,	0,0,	0,		55.0,	11.6,	-15,	0,		Lobb Bakglas - kort
+4b,	-7.5,	0,0,	0,		49.0,	12.7,	-15,	0,		Lobb Bakglas - lång
+4c,	-7.5,	0,0,	27,		52.0,	12.2,	-15,	0,		Lobb Bakglas - kort - diagonal
+4d,	-7.5,	0,0,	21,		47.0,	13.1,	-15,	0,		Lobb Bakglas - lång - diagonal
+5a,	-7.5,	0.0,	0,		58.0,	12.6,	0,		0,		Lobb för smash/bandeja - kort
+5b,	-7.5,	0.0,	0,		52.0,	14.6,	0,		0,		Lobb för smash/bandeja - lång
+5c,	-7.5,	0.0,	22,		56.0,	12.9,	0,		0,		Lobb för smash/bandeja - kort - diagonal
+5d,	-7.5,	0.0,	17,		51.0,	14.8,	0,		0,		Lobb för smash/bandeja - lång - diagonal
+6a,	-7.5,	0.0,	0,		20.0,	18.2,	10,		0,		Volley - kort - topspin
+6b,	-7.5,	0.0,	0,		18.0,	23.2,	10,		0,		Volley - lång - topspin
+6c,	-7.5,	0.0,	0,		18.0,	15.4,	-10,	0,		Volley - kort - backspin
+6d,	-7.5,	0.0,	0,		18.0,	18.1,	-10,	0,		Volley - lång - backspin
+6e,	-7.5,	0.0,	15,		21.0,	18.4,	10,		0,		Volley - kort - topspin - diagonal
+6f,	-7.5,	0.0,	11,		18.0,	23.8,	10,		0,		Volley - lång - topspin - diagonal
+6g,	-7.5,	0.0,	14,		19.0,	15.5,	-10,	0,		Volley - kort - backspin - diagonal
+6h,	-7.5,	0.0,	10,		16.0,	18.8,	-10,	0,		Volley - lång - backspin - diagonal
+7a,	-7.5,	-2.0,	21,		9.0,	30.4,	3,		0,		Hörnspel - no side spin - "mycket lite topspin"
+7b,	-7.5,	-2.0,	21,		8.0,	23.7,	-10,	0,		Hörnspel - no side spin - Backspin
+7c,	-7.5,	-2.0,	17,		9.0,	31.0,	3,		8,		Hörnspel - some side spin (positiv) - "mycket lite topspin"
+7d,	-7.5,	-2.0,	17,		8.0,	24.0,	-10,	8,		Hörnspel - some side spin (positiv) - Backspin
+7e,	-7.5,	-2.0,	25,		9.0,	31.0,	3,		-8,		Hörnspel - some side spin (negegativ) - "mycket lite topspin"
+7f,	-7.5,	-2.0,	26,		8.0,	24.0,	-10,	-8,		Hörnspel - some side spin (negegativ) - Backspin
+

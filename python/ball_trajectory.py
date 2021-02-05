@@ -42,15 +42,16 @@ def projectile_motion(g, k, x0, v0, vspinyz0, tt):
             list(zip(vec[:, 3], vec[:, 4], vec[:, 5])))
 
 
-def flyweight(cls):
-    instances = dict()
-    return lambda *args, **kargs: instances.setdefault(
-                                            (args, tuple(kargs.items())),
-                                            cls(*args, **kargs))
+class Flyweight(object):
+    _instances = dict()
+
+    @classmethod
+    def get_instance(cls, *args, **kargs):
+        return cls._instances.setdefault(
+            (cls, args, tuple(kargs.items())), cls(*args, **kargs))
 
 
-@flyweight
-class TennisBallTrajectory(object):
+class TennisBallTrajectory(Flyweight):
     # Parameters of projectile (modelled after a tennis ball)
     g = 9.81              # Acceleration due to gravity (m/s^2)
     rho_air = 1.29        # Air density (kg/m^3)
@@ -58,7 +59,7 @@ class TennisBallTrajectory(object):
     r = 0.033             # Radius of tennis ball (m)
     k = 0.5 * rho_air * pi * r ** 2 / m
     net_height = 0.95
-    court_size = (20, 10, 6)
+    court_size = (20, 10, 8)
     machine_size = (0.4, 0.4)
 
     def __init__(self, v0, alpha0, z0=0.3, vspinyz0=(0.0, 0.0)):
