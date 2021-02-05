@@ -1,4 +1,4 @@
-from Roller_Calc import roller_state, roller_sequence, roller_envelope
+from Roller_Calc import roller_state, roller_sequence, roller_envelope, inertia_roller
 import numpy as np
 import pandas as pd
 import math as m
@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 
 def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_nom_motor):
     """
-    Plot motor requirements for given sequence of trows
-    NOTE: at the moment the program only plots the requirements for the first motor in the quad configuration
+    Plot motor requirements for given sequence of throws
 
     w_r1 - roller angular velocity after throw 1 and
     w_r2 - roller angular velocity before throw 2 and
 
     r_id - which roller to plot
+    title - title of plots
+    ax - axis handle for subplots
 
     I_r - moment of inertia roller (all four are identical)
     d_t - required time between throw 1 and 2
@@ -85,13 +86,34 @@ def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_
     return d_t_0, w_r2_mm, omega_0_motor
 
 
+def plot_all_loads(param, n_nom_motor):
+
+    r_r = param[2]
+    r_p = param[3]
+    d = param[4]
+
+    n_0 = np.linspace(0, 5000, 5)
+    omega_0 = n_0*2*m.pi/60
+    vsurf_0 = omega_0*r_p
+    omega_nom = n_nom_motor*2*m.pi/60
+
+    Vp_max = -omega_0*r_p*d/(2*(r_p + r_r)) + omega_nom*r_r*d/(2*(r_p + r_r))
+    Vp_min = omega_0*r_p*d/(2*(r_p + r_r))
+
+    plt.figure('All_Loads')
+    plt.plot(vsurf_0, Vp_max, label=f'Vp_max')
+    plt.plot(vsurf_0, Vp_min, label=f'Vp_min')
+
+    plt.xlabel('spin angular speed [rpm]')
+    plt.ylabel('linear velocity [m/s]')
+    plt.legend()
 # Input throw 1
 spin_1 = np.array([0, 0])  # [rpm]
 speed_1 = 0  # [km/h]
 
 # Input throw 2
-spin_2 = np.array([3000, 0])
-speed_2 = 138
+spin_2 = np.array([0, 0])
+speed_2 = 120
 
 # Unit conversion
 w1 = spin_1*(2*m.pi)/60  # rad/s
@@ -102,11 +124,11 @@ V = np.array([speed_1, speed_2])/3.6  # m/s
 m_r = 0.25*1.0  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.1*1.0  # [m]
+r_r = 0.1013*1.0  # [m] 0.079
 r_p = 0.0677/2  # [m]
-d = 0.25  # [m]
+d = 2*r_r + 2*0.75*r_p  # [m]
 
-I_r_ex = 1 / 2 * m_r * r_r ** 2
+I_r_ex = inertia_roller(m_r, r_r)
 
 d_t_ex = [5, 1.5, 1.5]  # maximum time between trow 1 and 2 [s]
 
@@ -119,7 +141,7 @@ w_r2_start = np.array(w_r2_start)
 
 r_id_start = 0
 
-df_lc, df_lc_cmb = roller_envelope()
+df_lc, df_lc_cmb = roller_envelope(param)
 
 df_max = df_lc_cmb[df_lc_cmb.d_w_max == df_lc_cmb.d_w_max.max()]
 w_r1_dmax = df_max['w_r1'].iloc[0]
@@ -142,10 +164,10 @@ r_id = [r_id_start, r_id_dmax, r_id_cont]
 titles = ['start', 'max_diff', 'normal']
 
 #  Motor examples to plot
-n_0_ex = np.array([16700, 10000, 8900, 4800])
-n_nom_ex = np.array([14000, 8400, 7400, 3900])
-tau_0_ex = np.array([635.3, 319.4, 301.9, 183.3])*10**(-3)
-motor_id = ['1', '2', '3', '4']
+n_0_ex = np.array([10000, 4650])
+n_nom_ex = np.array([8400, 3900])
+tau_0_ex = np.array([319.4, 397.1])*10**(-3)
+motor_id = ['755', '770']
 
 fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
@@ -158,6 +180,28 @@ plt.show()
 # tau_0_ex = np.array([635.3, 319.4, 301.9, 183.3])*10**(-3)
 
 # 770 series
-# n_0_ex = np.array([16700, 10000, 8900, 4800])
-# n_nom_ex = np.array([14000, 8400, 7400, 3900])
-# tau_0_ex = np.array([635.3, 319.4, 301.9, 183.3])*10**(-3)
+# n_0_ex = np.array([4550, 9700, 16000, 4550])
+# n_nom_ex = np.array([3500, 8400, 13500, 3900])
+# tau_0_ex = np.array([334.1, 595.7, 587.9, 397.1])*10**(-3)
+
+# 987 series OVERSIZE
+# n_0_ex = np.array([5050, 10800, 13100, 11000])
+# n_nom_ex = np.array([4000, 9000, 11100, 9700])
+# tau_0_ex = np.array([417.6, 787.3, 676.4, 857.5])*10**(-3)
+
+# N3_SFN series
+# n_0_ex = np.array([6200, 6700, 12000, 17600])
+# n_nom_ex = np.array([5400, 5800, 10700, 15800])
+# tau_0_ex = np.array([297.5, 287.0, 446.8, 527.5])*10**(-3)
+
+# GR series UNDERSIZE
+# n_0_ex = np.array([6400, 6200, 6200, 6200])
+# n_nom_ex = np.array([5000, 5100, 5100, 5000])
+# tau_0_ex = np.array([24.5, 31.4, 33.3, 31.4])*10**(-3)
+
+# Selection
+# n_0_ex = np.array([10000, 4650])
+# n_nom_ex = np.array([8400, 3900])
+# tau_0_ex = np.array([319.4, 397.1])*10**(-3)
+# motor_id = ['755', '770']
+

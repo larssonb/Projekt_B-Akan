@@ -1,8 +1,17 @@
 import math as m
 import numpy as np
 import pandas as pd
+import scipy.optimize as scopt
 
 
+def inertia_roller(m_r, r_r):
+    """docstring"""
+    
+    I_r = 1/2*m_r*r_r**2
+    
+    return I_r
+ 
+  
 def energy_ball(w, V, m_p, r_p):
     """docstring"""
 
@@ -16,7 +25,7 @@ def energy_ball(w, V, m_p, r_p):
 def energy_roller(w, m_r, r_r):
     """docstring"""
 
-    I_r = 1 / 2 * m_r * r_r ** 2
+    I_r = inertia_roller(m_r, r_r)
 
     W_r = 1 / 2 * I_r * w ** 2
 
@@ -47,7 +56,7 @@ def roller_state(V_p, w_p, param, n=4):
     r_p = param[3]
     d = param[4]
 
-    I_r = 1 / 2 * m_r * r_r ** 2
+    I_r = inertia_roller(m_r, r_r)
     I_p = 2 / 3 * m_p * r_p ** 2
 
     w = []
@@ -55,7 +64,8 @@ def roller_state(V_p, w_p, param, n=4):
     W_dr = []
     W_0r = []
 
-    theta = m.asin((r_r + r_p) / d)
+    theta = m.acos(d/(2*(r_r + r_p)))
+    
     if n == 2:
         p = 1  # n = 4 quad
         c = 2/n  # c = 1/2
@@ -120,10 +130,10 @@ def roller_sequence(V, w_p1, w_p2, param):
     return w_r1, w_r2
 
 
-def test_roller_calc():
+def test_roller_calc(inp_speed, inp_spin):
 
-    spin = 500  # [rpm]
-    speed = 0  # [km/h]
+    spin = inp_spin/0.033/2/m.pi*60  # [rpm]
+    speed = inp_speed*3.6  # [km/h]
 
     w = spin*(2*m.pi)/60  # rad/s
     V = speed/3.6  # m/s
@@ -136,38 +146,40 @@ def test_roller_calc():
     d = 0.25  # [m]
 
     param = [m_r, m_p, r_r, r_p, d]
-    w_p = [w, w/2]
+    w_p = [w, 0]
     V_p = V
 
     w, w0, W_dr, W_0r = roller_state(V_p, w_p, param, n=4)
 
     # Convert to RPM
 
-    w_rmp = w/(2*m.pi)*60
-    w0_rpm = w0/(2*m.pi)*60
+    w_rpm = np.array(w)/(2*m.pi)*60
+    w0_rpm = np.array(w0)/(2*m.pi)*60
 
-    results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rmp, 'Wdr': W_dr, 'W0r': W_0r})
+    results = pd.DataFrame({'w0': w0_rpm, 'w1': w_rpm, 'Wdr': W_dr, 'W0r': W_0r})
 
     pd.options.display.float_format = "{:.0f}".format
 
     print(results)
 
 
-def roller_envelope(path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_flat.xlsx"):
+def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_flat.xlsx"):
 
     # path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
 
     # Read excel into dataframe
     df_lc=pd.read_excel(path)
 
-    m_r = 0.25*0.1  # [kg]
-    m_p = 0.056  # [kg]
-
-    r_r = 0.1*1.0  # [m]
-    r_p = 0.0677/2  # [m]
-    d = 0.25  # [m]
-
-    param = [m_r, m_p, r_r, r_p, d]
+    # m_r = 0.25*0.1  # [kg]
+    # m_p = 0.056  # [kg]
+    # 
+    # r_r = 0.1*1.0  # [m]
+    # r_p = 0.0677/2  # [m]
+    # d = 0.25  # [m]
+    # 
+    # param = [m_r, m_p, r_r, r_p, d]
+    
+    r_p = param[3]
 
     df_lc_cmb = pd.DataFrame(columns=['lc1', 'lc2', 'w_r1', 'w_r2', 'd_w_max', 'r_id'])
 
@@ -204,9 +216,17 @@ def roller_envelope(path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_f
     return df_lc, df_lc_cmb
 
 
+def roller_opt(Vp, wp, w_nom, r_p):
 
+    def opt_func(x):
 
+        y = (2*x + 2*0.75*r_p)/(2*(x + r_p))*(x - wp*r_p/w_nom) - Vp/w_nom
 
+        return y
+
+    r_r_opt = scopt.fsolve(opt_func, 0.1)
+
+    return r_r_opt
 
 
 
