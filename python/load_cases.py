@@ -7,8 +7,8 @@ from mpl_toolkits.mplot3d import Axes3D
 
 from ball_trajectory import TennisBallTrajectory
 
+
 class LCBallTrajectory(TennisBallTrajectory):
-    
     def ploty(self):
         x, y, z = list(zip(*self.x_trans))
         fig = plt.figure()
@@ -36,7 +36,6 @@ class LCBallTrajectory(TennisBallTrajectory):
         plt.savefig(f'p0={self.p[0:2]} γ={self.gamma0} '
                     f' α={self.alpha0} v0={self.v0} vt0={self.vspinyz0}'
                     ' SIDE.pdf')
-
 
     def plotz(self):
         x, y, z = list(zip(*self.x_trans))
@@ -66,7 +65,6 @@ class LCBallTrajectory(TennisBallTrajectory):
                     f' α={self.alpha0} v0={self.v0} vt0={self.vspinyz0}'
                     ' TOP.pdf')
 
-
     def print(self):
         super().print()
         x, _, z = list(zip(*self.x_trans))
@@ -79,12 +77,12 @@ class LCBallTrajectory(TennisBallTrajectory):
 # ### LC1 "Serve"
 
 # # LC 1a Serve - no side spin - "mycket lite topspin"
-# t_LC1a = LCBallTrajectory(21.2, 12, vspinyz0=(3, 0))
-# t_LC1a.transform((-7, -0.3), 2)
-# t_LC1a.plot()
-# t_LC1a.ploty()
-# t_LC1a.plotz()
-# t_LC1a.print()
+t_LC1a = LCBallTrajectory(21.2, 12, vspinyz0=(3, 0))
+t_LC1a.transform((-7, -0.3), 2)
+t_LC1a.plot()
+t_LC1a.ploty()
+t_LC1a.plotz()
+t_LC1a.print()
 
 # # LC 1b Serve - no side spin - Backspin
 # t_LC1b = LCBallTrajectory(17.7, 12, vspinyz0=(-10, 0))
@@ -491,5 +489,3 @@ class LCBallTrajectory(TennisBallTrajectory):
 # t_LC7f.ploty()
 # t_LC7f.plotz()
 # t_LC7f.print()
-
-
