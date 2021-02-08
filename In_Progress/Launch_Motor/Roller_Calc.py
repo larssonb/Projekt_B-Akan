@@ -163,61 +163,52 @@ def test_roller_calc(inp_speed, inp_spin):
     print(results)
 
 
-def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_flat.xlsx"):
+def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_mod.xlsx"):
 
     # path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
 
     # Read excel into dataframe
-    df_lc=pd.read_excel(path)
-
-    # m_r = 0.25*0.1  # [kg]
-    # m_p = 0.056  # [kg]
-    # 
-    # r_r = 0.1*1.0  # [m]
-    # r_p = 0.0677/2  # [m]
-    # d = 0.25  # [m]
-    # 
-    # param = [m_r, m_p, r_r, r_p, d]
+    df_lc = pd.read_excel(path)
     
     r_p = param[3]
 
     df_lc_cmb = pd.DataFrame(columns=['lc1', 'lc2', 'w_r1', 'w_r2', 'd_w_max', 'r_id'])
+    df_lc_roller = pd.DataFrame(columns=['lc', 'w_r0', 'w_r1'])
 
     for index1, row1 in df_lc.iterrows():
+        w_p1 = [row1['vspinz'] / r_p, -row1['vspiny'] / r_p]
+        V1 = row1['v0']
+
+        w_r11, w_r01, _, _ = roller_state(V1, w_p1, param)
+
+        w_r11 = np.array(w_r11)
+        w_r01 = np.array(w_r01)
+
+        df_lc_roller = df_lc_roller.append({'lc': row1['LC'], 'w_r0': w_r01, 'w_r1': w_r11}, ignore_index=True)
+
         for index2, row2 in df_lc.loc[index1:].iterrows():
-            V = [row1['v0'], row2['v0']]
 
-            w_p1 = [row1['vspinz']/r_p, -row1['vspiny']/r_p]
-            w_p2 = [row2['vspinz']/r_p, -row2['vspiny']/r_p]
+            w_p2 = [row2['vspinz'] / r_p, -row2['vspiny'] / r_p]
+            V2 = row2['v0']
 
-            w_r1, w_r2 = roller_sequence(V, w_p1, w_p2, param)
+            w_r12, w_r02, _, _ = roller_state(V2, w_p2, param)
 
-            w_r1 = np.array(w_r1)
-            w_r2 = np.array(w_r2)
+            w_r1 = w_r11
+            w_r2 = np.array(w_r02)
 
             i_max = np.argmax(w_r2 - w_r1)
 
             d_w_max = (w_r2 - w_r1)[i_max]
 
             df_lc_cmb = df_lc_cmb.append({'lc1': row1['LC'], 'lc2': row2['LC'],
-                                                  'w_r1': w_r1, 'w_r2': w_r2,
-                                                  'd_w_max': d_w_max, 'r_id': i_max}, ignore_index=True)
+                                          'w_r1': w_r1, 'w_r2': w_r2,
+                                          'd_w_max': d_w_max, 'r_id': i_max}, ignore_index=True)
 
-
-            
-    #     df = roller_state(row['v0'],
-    #                       [row['vspinz'], row['vspiny']],
-    #                       param,
-    #                       n=4)
-    #     ms.append(df)
-    #
-    # motor_states = pd.DataFrame(ms, index=df_lc['LC'],  columns=['w', 'w0', 'W_dr', 'W_0r'])
-
-    return df_lc, df_lc_cmb
+    return df_lc, df_lc_cmb, df_lc_roller
 
 
 def roller_opt(Vp, wp, w_nom, r_p):
-
+    """Calculate roller radius for ball speed/spin and nominal speed of motor"""
     def opt_func(x):
 
         y = (2*x + 2*0.75*r_p)/(2*(x + r_p))*(x - wp*r_p/w_nom) - Vp/w_nom

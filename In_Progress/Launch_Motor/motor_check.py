@@ -4,6 +4,7 @@ import pandas as pd
 import math as m
 import matplotlib.pyplot as plt
 
+
 def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_nom_motor):
     """
     Plot motor requirements for given sequence of throws
@@ -83,10 +84,10 @@ def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_
                      arrowprops=dict(arrowstyle="->",
                                      connectionstyle="angle3,angleA=0,angleB=-90"))
 
-    return d_t_0, w_r2_mm, omega_0_motor
+    return d_t_0 # , w_r2_mm, omega_0_motor
 
 
-def plot_all_loads(param, n_nom_motor):
+def plot_all_loads(param, n_nom_motor, df_lc):
 
     r_r = param[2]
     r_p = param[3]
@@ -107,6 +108,68 @@ def plot_all_loads(param, n_nom_motor):
     plt.xlabel('spin angular speed [rpm]')
     plt.ylabel('linear velocity [m/s]')
     plt.legend()
+    plt.grid(True)
+
+    for index, row in df_lc.iterrows():
+        x = row[['vspinz', 'vspiny']].abs().max()
+        y = row['v0']
+        lc_id = row['LC']
+
+        plt.scatter(x, y, marker='x', color='red')
+        text = f'lc id: {lc_id}'
+
+        plt.annotate(text, (x, y), xytext=(x, y), size=7)
+
+
+def plot_efficiency(mark_speed, no_load_speed, efficiency, df_lc_roller):
+
+    # calculate efficiency constant
+    k_eff_1 = efficiency/mark_speed
+    k_eff_2 = -efficiency/(no_load_speed - mark_speed)
+
+    m_2 = -k_eff_2*no_load_speed
+
+    x0 = np.array([0, mark_speed, no_load_speed])
+    y0 = np.array([0, efficiency, 0])
+
+    plt.figure('efficiency')
+    plt.plot(x0, y0)
+    plt.grid(True)
+    plt.title('approx efficiency for each lc')
+
+    plt.xlabel('spin angular speed of roller [rpm]')
+    plt.ylabel('efficiency [-]')
+
+    for index, row in df_lc_roller.iterrows():
+        x_max = np.max(row['w_r0']/2/m.pi*60)
+        x_min = np.min(row['w_r0']/2/m.pi*60)
+
+        if x_max <= mark_speed:
+            y_max = k_eff_1*x_max
+        else:
+            y_max = k_eff_2*x_max + m_2
+
+        if x_min <= mark_speed:
+            y_min = k_eff_1 * x_min
+        else:
+            y_min = k_eff_2 * x_min + m_2
+        a = np.stack((x_max, x_min))
+        b = np.stack((y_max, y_min))
+
+        ind = np.unravel_index(np.argmin(b, axis=0), b.shape)
+
+        x = a[ind]
+        y = b[ind]
+
+        lc_id = row['lc']
+
+        plt.scatter(x, y, marker='x', color='red')
+        text = f'lc id: {lc_id}'
+
+        plt.annotate(text, (x, y), xytext=(x, y), size=7)
+
+
+
 # Input throw 1
 spin_1 = np.array([0, 0])  # [rpm]
 speed_1 = 0  # [km/h]
@@ -124,7 +187,7 @@ V = np.array([speed_1, speed_2])/3.6  # m/s
 m_r = 0.25*1.0  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.1013*1.0  # [m] 0.079
+r_r = 0.0911*1.0  # [m] 0.079
 r_p = 0.0677/2  # [m]
 d = 2*r_r + 2*0.75*r_p  # [m]
 
@@ -141,7 +204,7 @@ w_r2_start = np.array(w_r2_start)
 
 r_id_start = 0
 
-df_lc, df_lc_cmb = roller_envelope(param)
+df_lc, df_lc_cmb, df_lc_roller = roller_envelope(param)
 
 df_max = df_lc_cmb[df_lc_cmb.d_w_max == df_lc_cmb.d_w_max.max()]
 w_r1_dmax = df_max['w_r1'].iloc[0]
@@ -164,15 +227,17 @@ r_id = [r_id_start, r_id_dmax, r_id_cont]
 titles = ['start', 'max_diff', 'normal']
 
 #  Motor examples to plot
-n_0_ex = np.array([10000, 4650])
-n_nom_ex = np.array([8400, 3900])
-tau_0_ex = np.array([319.4, 397.1])*10**(-3)
+n_0_ex = np.array([4800, 4650])
+n_nom_ex = np.array([3900, 3900])
+tau_0_ex = np.array([183.3, 397.1])*10**(-3)
 motor_id = ['755', '770']
 
 fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
     plot_all_motor(w1[i], w2[i], r_id[i], title, axs[i], I_r_ex, d_t_ex[i], n_0_ex, tau_0_ex, n_nom_ex)
 
+plot_all_loads(param, 3900*1.15, df_lc)
+plot_efficiency(3900, 4800, 0.64, df_lc_roller)
 plt.show()
 # 755 series
 # n_0_ex = np.array([16700, 10000, 8900, 4800])
