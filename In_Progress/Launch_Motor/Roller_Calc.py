@@ -163,7 +163,7 @@ def test_roller_calc(inp_speed, inp_spin):
     print(results)
 
 
-def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs_mod.xlsx"):
+def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Final\LCs.xlsx"):
 
     # path = '/Users/BjornLarsson/github/Projekt_B-Akan/Final/LCs.xlsx'
 

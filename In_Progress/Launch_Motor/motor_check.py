@@ -132,13 +132,17 @@ def plot_efficiency(mark_speed, no_load_speed, efficiency, df_lc_roller):
     x0 = np.array([0, mark_speed, no_load_speed])
     y0 = np.array([0, efficiency, 0])
 
-    plt.figure('efficiency')
-    plt.plot(x0, y0)
-    plt.grid(True)
-    plt.title('approx efficiency for each lc')
+    fig, axs = plt.subplots(1, 2, figsize=(9, 3))
 
-    plt.xlabel('spin angular speed of roller [rpm]')
-    plt.ylabel('efficiency [-]')
+    axs[0].title.set_text('efficiency max speed roller')
+    axs[1].title.set_text('efficiency min speed roller')
+
+    for ax in axs:
+        ax.plot(x0, y0)
+        ax.grid(True)
+
+        ax.set_xlabel('spin angular speed of roller [rpm]')
+        ax.set_ylabel('efficiency [-]')
 
     for index, row in df_lc_roller.iterrows():
         x_max = np.max(row['w_r0']/2/m.pi*60)
@@ -162,12 +166,13 @@ def plot_efficiency(mark_speed, no_load_speed, efficiency, df_lc_roller):
         y = b[ind]
 
         lc_id = row['lc']
-
-        plt.scatter(x, y, marker='x', color='red')
         text = f'lc id: {lc_id}'
 
-        plt.annotate(text, (x, y), xytext=(x, y), size=7)
+        axs[0].scatter(x_max, y_max, marker='x', color='red')
+        axs[0].annotate(text, (x_max, y_max), xytext=(x_max, y_max), size=7)
 
+        axs[1].scatter(x_min, y_min, marker='x', color='red')
+        axs[1].annotate(text, (x_min, y_min), xytext=(x_min, y_min), size=7)
 
 
 # Input throw 1
@@ -237,7 +242,7 @@ for i, title in enumerate(titles):
     plot_all_motor(w1[i], w2[i], r_id[i], title, axs[i], I_r_ex, d_t_ex[i], n_0_ex, tau_0_ex, n_nom_ex)
 
 plot_all_loads(param, 3900*1.15, df_lc)
-plot_efficiency(3900, 4800, 0.64, df_lc_roller)
+plot_efficiency(3900, 4650, 0.74, df_lc_roller)
 plt.show()
 # 755 series
 # n_0_ex = np.array([16700, 10000, 8900, 4800])
