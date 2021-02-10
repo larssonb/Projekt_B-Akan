@@ -207,13 +207,21 @@ def roller_envelope(param, path=r"C:\Users\knutn\Documents\Combitech\B_Akan\Fina
     return df_lc, df_lc_cmb, df_lc_roller
 
 
-def roller_opt(Vp, wp, w_nom, r_p):
+def roller_opt(Vp, wp, w_nom, param_0):
     """Calculate roller radius for ball speed/spin and nominal speed of motor"""
     def opt_func(x):
 
-        y = (2*x + 2*0.75*r_p)/(2*(x + r_p))*(x - wp*r_p/w_nom) - Vp/w_nom
+        m_r = param_0[0]
+        m_p = param_0[1]
 
-        return y
+        r_p = param_0[3]
+
+        d = 2*x + 2*0.75*r_p
+
+        _, w_0, _, _ = roller_state(Vp, wp, [m_r, m_p, x, r_p, d])
+        w_0 = np.array(w_0)
+
+        return w_nom - w_0.max()
 
     r_r_opt = scopt.fsolve(opt_func, 0.1)
 

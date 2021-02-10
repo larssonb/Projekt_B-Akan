@@ -181,7 +181,7 @@ speed_1 = 0  # [km/h]
 
 # Input throw 2
 spin_2 = np.array([0, 0])
-speed_2 = 120
+speed_2 = 117
 
 # Unit conversion
 w1 = spin_1*(2*m.pi)/60  # rad/s
@@ -192,7 +192,7 @@ V = np.array([speed_1, speed_2])/3.6  # m/s
 m_r = 0.25*1.0  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.0911*1.0  # [m] 0.079
+r_r = 0.0763*1.0  # [m] 0.079
 r_p = 0.0677/2  # [m]
 d = 2*r_r + 2*0.75*r_p  # [m]
 
@@ -218,13 +218,13 @@ r_id_dmax = df_max['r_id'].iloc[0]
 
 df_cont = df_lc_cmb[df_lc_cmb.lc1 == df_lc_cmb.lc2]
 df_cont_max = df_cont[df_cont.d_w_max == df_cont.d_w_max.max()]
-# w_r1_cont = df_cont_max['w_r1'].iloc[0]
-# w_r2_cont = df_cont_max['w_r2'].iloc[0]
-# r_id = df_cont_max['r_id'].iloc[0]
+w_r1_cont = df_cont_max['w_r1'].iloc[0]
+w_r2_cont = df_cont_max['w_r2'].iloc[0]
+r_id_cont = df_cont_max['r_id'].iloc[0]
 
-w_r1_cont = df_cont['w_r1'].loc[680]
-w_r2_cont = df_cont['w_r2'].loc[680]
-r_id_cont = df_cont['r_id'].loc[680]
+# w_r1_cont = df_cont['w_r1'].loc[9]
+# w_r2_cont = df_cont['w_r2'].loc[680]
+# r_id_cont = df_cont['r_id'].loc[680]
 
 w1 = [w_r1_start, w_r1_dmax, w_r1_cont]
 w2 = [w_r2_start, w_r2_dmax, w_r2_cont]
@@ -241,7 +241,7 @@ fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
     plot_all_motor(w1[i], w2[i], r_id[i], title, axs[i], I_r_ex, d_t_ex[i], n_0_ex, tau_0_ex, n_nom_ex)
 
-plot_all_loads(param, 3900*1.15, df_lc)
+plot_all_loads(param, 4406, df_lc)
 plot_efficiency(3900, 4650, 0.74, df_lc_roller)
 plt.show()
 # 755 series
