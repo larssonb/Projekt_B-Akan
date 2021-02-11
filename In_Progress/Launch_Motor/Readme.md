@@ -28,10 +28,10 @@ l = r\times\Beta
 ](https://render.githubusercontent.com/render/math?math=%5Cdisplaystyle+%5Cbegin%7Balign%2A%7D%0Al+%3D+r%5Ctimes%5CBeta%0A%5Cend%7Balign%2A%7D%0A)
 
 ## Motor Selection
-# Initial choice of DC-motor : Transmotec 770-32165-CC https://www.transmotec.se/product/770-32165-CC/
-# Roller diameter : 152.6 mm
-# Roller mass: 250g
-# Inertia: "Disc"
+### Initial choice of DC-motor : Transmotec 770-32165-CC https://www.transmotec.se/product/770-32165-CC/
+### Roller diameter : 152.6 mm
+### Roller mass: 250g
+### Inertia: "Disc"
 
 The DC motor operates along a stright line relating torque to angular speed. The relationship os expressed as:
 
