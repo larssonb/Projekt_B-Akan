@@ -104,8 +104,8 @@ def roller_state(V_p, w_p, param, n=4):
 
     W_dr_array = np.array(W_dr)
 
-    balance = W_dr_array.sum() + W_kp
-    #print(balance)
+    # balance = W_dr_array.sum() + W_kp
+    # print(balance)
 
     return [w, w0, W_dr, W_0r]
 
@@ -226,11 +226,3 @@ def roller_opt(Vp, wp, w_nom, param_0):
     r_r_opt = scopt.fsolve(opt_func, 0.1)
 
     return r_r_opt
-
-
-
-
-
-
-
-

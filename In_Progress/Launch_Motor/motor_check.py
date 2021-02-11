@@ -59,11 +59,12 @@ def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_
               f'min n: {np.min(n_r2):.0f}'
 
     ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=7,
-             verticalalignment='top')
+            verticalalignment='top')
 
     ax.plot(n_0, tau_0[r_id, :], label=f'dt = {d_t:.1f} \n'
-                                     f'n1: {n_r1[r_id]:.0f} \n'
-                                     f'n2: {n_r2[r_id]:.0f}')  # n_motor[0, :], tau_motor[0, :], 'r+'
+            f'n1: {n_r1[r_id]:.0f} \n'
+            f'n2: {n_r2[r_id]:.0f}')  # n_motor[0, :], tau_motor[0, :], 'r+'
+
     ax.set_xlabel('no-load speed [rpm]')
     ax.set_ylabel('stall torque [Nm]')
     ax.legend()
@@ -78,13 +79,13 @@ def plot_all_motor(w_r1, w_r2, r_id, title, ax, I_r, d_t, n_motor, tau_motor, n_
         text = f'motor id: {id} \n dt = {d_t_0[r_id, i]:.1f} \n nominal rpm: {n_nom_motor[i]}'
 
         ax.annotate(text, (x, y),
-                     xytext=(x - x_offset[i],
-                     y + y_offset[i]),
-                     size=7,
-                     arrowprops=dict(arrowstyle="->",
-                                     connectionstyle="angle3,angleA=0,angleB=-90"))
+                    xytext=(x - x_offset[i],
+                    y + y_offset[i]),
+                    size=7,
+                    arrowprops=dict(arrowstyle="->",
+                                    connectionstyle="angle3,angleA=0,angleB=-90"))
 
-    return d_t_0 # , w_r2_mm, omega_0_motor
+    return d_t_0  # , w_r2_mm, omega_0_motor
 
 
 def plot_all_loads(param, n_nom_motor, df_lc):
@@ -274,4 +275,3 @@ plt.show()
 # n_nom_ex = np.array([8400, 3900])
 # tau_0_ex = np.array([319.4, 397.1])*10**(-3)
 # motor_id = ['755', '770']
-
