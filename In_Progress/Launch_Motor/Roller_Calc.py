@@ -8,7 +8,8 @@ def inertia_roller(m_r, r_r):
     """docstring"""
     
     I_r = 1/2*m_r*r_r**2
-    
+    # Return value for specific d=150mm wheel wound in tellus catalog artnr: 31532
+    I_r = 1.279*10**-3
     return I_r
  
   

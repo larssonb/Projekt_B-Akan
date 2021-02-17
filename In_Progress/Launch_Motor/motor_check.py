@@ -190,10 +190,10 @@ w2 = spin_2*(2*m.pi)/60  # rad/s
 V = np.array([speed_1, speed_2])/3.6  # m/s
 
 # Roller and ball parameters
-m_r = 0.25*1.0  # [kg]
+m_r = 0.488  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.0763*1.0  # [m] 0.079
+r_r = 0.15/2  # [m] 0.0763 "optimized radius"
 r_p = 0.0677/2  # [m]
 d = 2*r_r + 2*0.75*r_p  # [m]
 
