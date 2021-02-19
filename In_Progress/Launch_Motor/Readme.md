@@ -32,6 +32,7 @@ l = r\times\Beta
 ### Roller diameter : 152.6 mm
 ### Roller mass: 250g
 ### Inertia: "Disc"
+### Roller Selection: https://www.swedewheel.com/en/products/wheel/wheel/pa6-(nylon)/3615040152n-wheel-150x40-pa6--nature
 
 The DC motor operates along a stright line relating torque to angular speed. The relationship os expressed as:
 
