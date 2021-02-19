@@ -190,7 +190,7 @@ w2 = spin_2*(2*m.pi)/60  # rad/s
 V = np.array([speed_1, speed_2])/3.6  # m/s
 
 # Roller and ball parameters
-m_r = 0.488  # [kg]
+m_r = 0.350  # [kg]
 m_p = 0.056  # [kg]
 
 r_r = 0.15/2  # [m] 0.0763 "optimized radius"
@@ -219,13 +219,13 @@ r_id_dmax = df_max['r_id'].iloc[0]
 
 df_cont = df_lc_cmb[df_lc_cmb.lc1 == df_lc_cmb.lc2]
 df_cont_max = df_cont[df_cont.d_w_max == df_cont.d_w_max.max()]
-# w_r1_cont = df_cont_max['w_r1'].iloc[0]
-# w_r2_cont = df_cont_max['w_r2'].iloc[0]
-# r_id_cont = df_cont_max['r_id'].iloc[0]
+w_r1_cont = df_cont_max['w_r1'].iloc[0]
+w_r2_cont = df_cont_max['w_r2'].iloc[0]
+r_id_cont = df_cont_max['r_id'].iloc[0]
 
-w_r1_cont = df_cont['w_r1'].loc[728]
-w_r2_cont = df_cont['w_r2'].loc[728]
-r_id_cont = df_cont['r_id'].loc[728]
+# w_r1_cont = df_cont['w_r1'].loc[728]
+# w_r2_cont = df_cont['w_r2'].loc[728]
+# r_id_cont = df_cont['r_id'].loc[728]
 
 w1 = [w_r1_start, w_r1_dmax, w_r1_cont]
 w2 = [w_r2_start, w_r2_dmax, w_r2_cont]
