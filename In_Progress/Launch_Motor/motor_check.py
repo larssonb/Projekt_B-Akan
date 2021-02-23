@@ -193,7 +193,7 @@ V = np.array([speed_1, speed_2])/3.6  # m/s
 m_r = 0.350  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.15/2  # [m] 0.0763 "optimized radius"
+r_r = 0.16/2  # [m] 0.0763 "optimized radius"
 r_p = 0.0677/2  # [m]
 d = 2*r_r + 2*0.75*r_p  # [m]
 
@@ -233,10 +233,10 @@ r_id = [r_id_start, r_id_dmax, r_id_cont]
 titles = ['start', 'max_diff', 'normal']
 
 #  Motor examples to plot
-n_0_ex = np.array([4800, 4650])
-n_nom_ex = np.array([3900, 3900])
-tau_0_ex = np.array([183.3, 397.1])*10**(-3)
-motor_id = ['755', '770']
+n_0_ex = np.array([8900, 4650, 5050])
+n_nom_ex = np.array([7400, 3900, 4000])
+tau_0_ex = np.array([301.9, 397.1, 417.6])*10**(-3)
+motor_id = ['755', '770', '987']
 
 fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
