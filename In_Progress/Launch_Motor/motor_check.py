@@ -190,7 +190,7 @@ w2 = spin_2*(2*m.pi)/60  # rad/s
 V = np.array([speed_1, speed_2])/3.6  # m/s
 
 # Roller and ball parameters
-m_r = 0.350  # [kg]
+m_r = 0.400  # [kg]
 m_p = 0.056  # [kg]
 
 r_r = 0.16/2  # [m] 0.0763 "optimized radius"
@@ -233,17 +233,17 @@ r_id = [r_id_start, r_id_dmax, r_id_cont]
 titles = ['start', 'max_diff', 'normal']
 
 #  Motor examples to plot
-n_0_ex = np.array([8900, 4650, 5050])
-n_nom_ex = np.array([7400, 3900, 4000])
-tau_0_ex = np.array([301.9, 397.1, 417.6])*10**(-3)
+n_0_ex = np.array([8900/2, 4650, 5050])
+n_nom_ex = np.array([7400/2, 3900, 4000])
+tau_0_ex = np.array([301.9/2, 397.1, 417.6])*10**(-3)
 motor_id = ['755', '770', '987']
 
 fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
     plot_all_motor(w1[i], w2[i], r_id[i], title, axs[i], I_r_ex, d_t_ex[i], n_0_ex, tau_0_ex, n_nom_ex)
 
-plot_all_loads(param, 4406, df_lc)
-plot_efficiency(3900, 4650, 0.74, df_lc_roller)
+plot_all_loads(param, 3782, df_lc)
+plot_efficiency(7400, 8900, 0.7, df_lc_roller)
 plt.show()
 # 755 series
 # n_0_ex = np.array([16700, 10000, 8900, 4800])
