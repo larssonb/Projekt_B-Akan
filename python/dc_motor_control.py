@@ -7,6 +7,7 @@
 #import RPi.GPIO as GPIO  # import RPi.GPIO module
 from enum import Enum
 import time
+import numpy as np
 
 # # Import the PCA9685 module.
 # from adafruit_pca9685 import PCA9685
@@ -56,61 +57,47 @@ class MotorController(object):
 
         if speed == self.speed:
             return
-
+        # Ramp step size
+        step_size = 0.05
         # Sleep time - UPDATE LATER
         timer = 0.1
 
         if speed >= 0 and self.speed < 0:
             # Code for changing direction from backward to forward
-            steps_A = round(abs(0 - self.speed) / 0.05)
-            steps_B = round(abs(speed) / 0.05)
 
-            speed_step_A = (0 - self.speed) / steps_A
-            ramp_speed = self.speed
-            for step in range(steps_A):
-                ramp_speed += speed_step_A
-                print(ramp_speed)
-                #pca.channels[self.PWM_channel].duty_cycle = hex(int(ramp_speed * 0xFFFF))
-                time.sleep(timer)
+            ramp_steps = np.concatenate([np.arange(self.speed, 0+step_size, step_size),
+                                         np.arange(0, speed+step_size, step_size)])
 
-            self._set_direction_forward()
-
-            speed_step_B = abs(speed) / steps_B
-            for step in range(steps_B):
-                ramp_speed += speed_step_B
-                print(ramp_speed)
+            for step in ramp_steps:
+                if step == 0:
+                    self._set_direction_forward()
+                    time.sleep(timer)
+                print(step)
                 #pca.channels[self.PWM_channel].duty_cycle = hex(int(ramp_speed * 0xFFFF))
                 time.sleep(timer)
 
         elif speed < 0 and self.speed >= 0:
             # Code for changing direction from forward to backward
-            steps_A = round(abs(0 - self.speed) / 0.05)
-            steps_B = round(abs(speed) / 0.05)
 
-            speed_step_A = (0 - self.speed) / steps_A
-            ramp_speed = self.speed
-            for step in range(steps_A):
-                ramp_speed += speed_step_A
-                print(ramp_speed)
-                #pca.channels[self.PWM_channel].duty_cycle = hex(int(ramp_speed * 0xFFFF))
-                time.sleep(timer)
-
-            self._set_direction_backward()
-
-            speed_step_B = abs(speed) / steps_B
-            for step in range(steps_B):
-                ramp_speed += speed_step_B
-                print(ramp_speed)
+            ramp_steps = np.concatenate([np.arange(speed, 0+step_size, step_size),
+                                        np.arange(0, self.speed+step_size, step_size)])
+            ramp_steps = reversed(ramp_steps)
+            for step in ramp_steps:
+                if step == 0:
+                    self._set_direction_backward()
+                    time.sleep(timer)
+                print(step)
                 #pca.channels[self.PWM_channel].duty_cycle = hex(int(ramp_speed * 0xFFFF))
                 time.sleep(timer)
 
         else:
-            steps = round(abs(speed - self.speed) / 0.05)
-            speed_step = (speed - self.speed) / steps
-            ramp_speed = self.speed
-            for step in range(steps):
-                ramp_speed += speed_step
-                print(ramp_speed)
+            if self.speed < speed:
+                ramp_steps = np.arange(self.speed, speed+step_size, step_size)
+            else:
+                ramp_steps = reversed(np.arange(speed, self.speed + step_size, step_size))
+
+            for step in ramp_steps:
+                print(step)
                 #pca.channels[self.PWM_channel].duty_cycle = hex(int(ramp_speed * 0xFFFF))
                 time.sleep(timer)
 
