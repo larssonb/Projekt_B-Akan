@@ -190,10 +190,10 @@ w2 = spin_2*(2*m.pi)/60  # rad/s
 V = np.array([speed_1, speed_2])/3.6  # m/s
 
 # Roller and ball parameters
-m_r = 0.400  # [kg]
+m_r = 0.3  # [kg]
 m_p = 0.056  # [kg]
 
-r_r = 0.16/2  # [m] 0.0763 "optimized radius"
+r_r = 0.18/2  # [m] 0.0763 "optimized radius"
 r_p = 0.0677/2  # [m]
 d = 2*r_r + 2*0.75*r_p  # [m]
 
@@ -242,8 +242,8 @@ fig, axs = plt.subplots(1, 3, figsize=(9, 3))
 for i, title in enumerate(titles):
     plot_all_motor(w1[i], w2[i], r_id[i], title, axs[i], I_r_ex, d_t_ex[i], n_0_ex, tau_0_ex, n_nom_ex)
 
-plot_all_loads(param, 3782, df_lc)
-plot_efficiency(7400, 8900, 0.7, df_lc_roller)
+plot_all_loads(param, 7400*0.85/2, df_lc)
+plot_efficiency(7400/2, 8900/2, 0.7/2, df_lc_roller)
 plt.show()
 # 755 series
 # n_0_ex = np.array([16700, 10000, 8900, 4800])
