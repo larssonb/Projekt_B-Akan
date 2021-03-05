@@ -36,6 +36,7 @@ def energy_roller(w, m_r, r_r):
 
 def roller_state(V_p, w_p, param, n=4):
     """
+    Inputs:
     w_p = [wp1, wp2] - angular velocity of ball wp1 (top spin), wp2 (side spin)   [rad/s]
     V_p - linear velocity of ball  [m/s]
 
@@ -49,6 +50,12 @@ def roller_state(V_p, w_p, param, n=4):
     n - number of rollers (2 or 4)
 
     Comment: See markdown file for launch motors on github for explanation of calculations
+
+    Outputs:
+    w = list of the angular velocities after the throw
+    w0 = list of angular velocities before the throw (use for motor control)
+    W_dr = energy difference on rollers
+    W_0r = kinetic energy in roller before throw
     """
 
     global p
