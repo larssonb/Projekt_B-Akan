@@ -19,8 +19,8 @@ except (ImportError, RuntimeError):
     from test_env import GPIO, busio, SCL, SDA, PCA9685
     TEST_ENV = True
 
-RPM_STEP = 250
-STEP_TIME = 0.05
+RPM_STEP = 50
+STEP_TIME = 0.1
 
 
 class BAkan(object):
@@ -46,6 +46,13 @@ class BAkan(object):
     def set_all(self, RPM):
         for label in self.motors:
             self.motors[label].set_target_RPM(RPM)
+            
+    def set_RPM(self, label: str, RPM: int) -> None:
+        label = label.lower()
+        if label in [engine.label.lower() for engine in config.BAKAN]:
+            self.motors[label].set_target_RPM(RPM)
+        else:
+            logging.warning(f'DCEngine \'{label}\' does not exist.')
 
 
 class DCMotor(object):
@@ -118,20 +125,28 @@ class DCMotor(object):
                 if self._target_RPM > 0:
                     # Set pin A =1, B = 0
                     GPIO.output(self._pin_A, 1)
+                    logging.debug(f'{self.label} motor - A = 1')
                 if self._target_RPM < 0:
                     # Set pin A = 0, B = 1
                     GPIO.output(self._pin_B, 1)
+                    logging.debug(f'{self.label} motor - B = 1')
 
-            if abs(self._current_RPM) < RPM_STEP and self._current_RPM != 0:
+            if abs(self._current_RPM) <= RPM_STEP and self._current_RPM != 0:
                 # Set pin A, B = 0
-                if self._current_RPM > 0:
+                if (self._current_RPM > 0
+                        and self._target_RPM < self._current_RPM):
                     # Set pin A =1, B = 0
                     GPIO.output(self._pin_A, 0)
-                if self._current_RPM < 0:
+                    logging.debug(f'{self.label} motor - A = 0')
+                    self._current_RPM = 0
+                elif (self._current_RPM < 0
+                        and self._target_RPM > self._current_RPM):
                     # Set pin A = 0, B = 1
                     GPIO.output(self._pin_B, 0)
-                self._current_RPM = 0
-            elif abs(self._target_RPM - self._current_RPM) <= RPM_STEP:
+                    logging.debug(f'{self.label} motor - B = 0')
+                    self._current_RPM = 0
+            
+            if abs(self._target_RPM - self._current_RPM) <= RPM_STEP:
                 self._current_RPM = self._target_RPM
             else:
                 self._current_RPM += copysign(
@@ -162,6 +177,9 @@ class DCMotor(object):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     bakan = BAkan()
-    bakan.set_all(2000)
+    bakan.set_RPM('top', 500)
+#     bakan.set_all(1500)
+#     bakan.set_RPM('top', 0)
+#     bakan.set_RPM('bottom', 2000)
