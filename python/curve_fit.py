@@ -6,15 +6,15 @@
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit, differential_evolution
 import numpy as np
+from statistics import median
 
 
-def func(x, a, b, c):
+def func(x, a, b, c, d):
     """Curve fit function."""
-    return a * np.cos(np.pi * x + b) + c
+    return a * np.cos(b * x + c) + d
 
-
-def inv_func(x, a, b, c):
-    return (np.arccos((x - c) / a) - b) / np.pi + 2
+def inv_func(x, a, b, c, d):
+    return (np.arccos((x - d) / a) - c) / b
 
 
 def rasmus(x):
@@ -34,21 +34,19 @@ ydata = [[118, 294, 685, 1065, 1445, 1770, 2070, 2254, 2280, 2290],
          [67, 245, 590, 935, 1240, 1570, 1790, 2000, 2050, 2040],
          [0, 285, 650, 1030, 1310, 1630, 1850, 2010, 2050, 2050]]
 yflat = [y for sublist in ydata for y in sublist]
+yclean = [median(yv) for yv in map(list, zip(*ydata))]
 
-for yd in ydata:
-    plt.scatter(xdata, yd, marker='x')
-bounds = [(-np.inf, 0, 0, -np.inf), (np.inf, 2 * np.pi, 2 * np.pi, np.inf)]
-popt, pcov = curve_fit(func, xflat, yflat)
+#for yd in ydata:
+#    plt.scatter(xdata, yd, marker='x')
+#plt.plot(xdata, yclean, marker='o')
+b = [(-max(yclean), np.pi/2, -np.pi, -np.inf), (max(yclean), 3/2 * np.pi, np.pi, np.inf)]
+popt, pcov = curve_fit(func, xdata, yclean, bounds=b)
 print(popt)
 
-x = np.linspace(0, 1, 100)
+x = np.linspace(0.15, 0.8, 100)
 
-plt.plot(x, func(x, *popt))
-plt.show()
-
-plt.figure()
-y = np.linspace(250, 2250, 100)
 for yd in ydata:
     plt.scatter(yd, xdata, marker='x')
-plt.plot(y, inv_func(y, *popt))
+x_inv = np.linspace(70, 2230, 100)
+plt.plot(x_inv, inv_func(x_inv, *popt))
 plt.show()
