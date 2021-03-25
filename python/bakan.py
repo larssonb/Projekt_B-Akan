@@ -43,14 +43,27 @@ class BAkan(object):
             self.motors[mc.label.lower()] = DCMotor(mc.label, mc.A, mc.B,
                                                     mc.PWM, mc.RPM2PWM, pca)
 
-    def set_all(self, RPM):
+    def set_all_RPM(self, RPM):
         for label in self.motors:
-            self.motors[label].set_target_RPM(RPM)
+            self.set_RPM(label, RPM)
             
     def set_RPM(self, label: str, RPM: int) -> None:
         label = label.lower()
         if label in [engine.label.lower() for engine in config.BAKAN]:
             self.motors[label].set_target_RPM(RPM)
+        else:
+            logging.warning(f'DCEngine \'{label}\' does not exist.')
+
+    def set_speed_all(self, speed):
+        for label in self.motors:
+            self.set_speed(label, speed)
+
+    def set_speed(self, label: str, speed: float):
+        label = label.lower()
+        if label in [engine.label.lower() for engine in config.BAKAN]:
+            d = 0.15
+            RPM = speed * 60 / (d * np.pi)
+            self.set_RPM(label, RPM)
         else:
             logging.warning(f'DCEngine \'{label}\' does not exist.')
 
@@ -179,7 +192,7 @@ class DCMotor(object):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     bakan = BAkan()
-    bakan.set_RPM('top', 500)
+    bakan.set_speed_all(10)
 #     bakan.set_all(1500)
 #     bakan.set_RPM('top', 0)
 #     bakan.set_RPM('bottom', 2000)

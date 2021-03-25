@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+#import matplotlib.pyplot as plt
+#from mpl_toolkits.mplot3d import Axes3D
 
 from ball_trajectory import TennisBallTrajectory
 
@@ -76,21 +76,21 @@ class LCBallTrajectory(TennisBallTrajectory):
 
 t_TC1 = LCBallTrajectory(10, 30, vspinyz0=(0, 0))
 t_TC1.transform((-5, 0), 0)
-t_TC1.ploty()
-t_TC1.plotz()
-t_TC1.print()
+# t_TC1.ploty()
+# t_TC1.plotz()
+#t_TC1.print()
 
-t_TC2a = LCBallTrajectory(10, 30, vspinyz0=(4, 0))
-t_TC2a.transform((-5, 0), 0)
-t_TC2a.ploty()
-t_TC2a.print()
-
-t_TC2b = LCBallTrajectory(10, 30, vspinyz0=(-4, 0))
-t_TC2b.transform((-5, 0), 0)
-t_TC2b.ploty()
-t_TC2b.print()
-
-t_TC3 = LCBallTrajectory(10, 30, vspinyz0=(0, 4))
-t_TC3.transform((-5, 0), 0)
-t_TC3.plotz()
-t_TC3.print()
+# t_TC2a = LCBallTrajectory(10, 30, vspinyz0=(4, 0))
+# t_TC2a.transform((-5, 0), 0)
+# t_TC2a.ploty()
+# t_TC2a.print()
+# 
+# t_TC2b = LCBallTrajectory(10, 30, vspinyz0=(-4, 0))
+# t_TC2b.transform((-5, 0), 0)
+# t_TC2b.ploty()
+# t_TC2b.print()
+# 
+# t_TC3 = LCBallTrajectory(10, 30, vspinyz0=(0, 4))
+# t_TC3.transform((-5, 0), 0)
+# t_TC3.plotz()
+# t_TC3.print()
