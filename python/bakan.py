@@ -92,9 +92,21 @@ class DCMotor(object):
         self._lock = threading.Lock()
         self._stop_event = threading.Event()
 
-    def _RPM2PWM(self) -> float:
-        xp, fp = zip(*self._RPM2PWM_lookup)
-        return np.interp(self._current_RPM, xp, fp)
+    def _RPM2PWM(self, a=0, b=0, c=0, d=0) -> float:
+        """Curve fit function."""
+        LOW, HIGH = 0.15, 0.87
+        pwm = (np.arccos((self._current_RPM - d) / a) - c) / b
+
+        if pwm < LOW:
+            logging.info(f'{self.label} motor - '
+                            f'requested RPM too low PWM is set to 0.')
+            pwm = 0.
+        elif pwm > HIGH:
+            logging.info(f'{self.label} motor - '
+                            f'requested RPM too high PWM is set to maximum.')
+            pwm = HIGH
+
+        return pwm
 
     def set_target_RPM(self, RPM: int) -> None:
         """Set motor target RPM."""
