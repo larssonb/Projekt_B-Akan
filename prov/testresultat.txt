@@ -1,0 +1,8 @@
+Resultat [m]	Speed [m/s]		Deg		Antal
+8.5		10			30		6 exakt lika långa
+13-13.5		14.9			17		LC31 6 st
+12-12.5		12.1, 9.9t, 14.3b	29		6 st lika dana med backspinn
+10.5		12.1, 9.9b, 14.3t	29		6 st lika dana med topspinn
+12.2		12.1, 9.9r, 14.3l	29		6 st lika dana med sidspinn
+11.8		12.1, 7.7r, 16.5l	29		6 st med tydlig spinn
+12		12.1, 7.7t, 16.5b	29		6 st med backspinn
